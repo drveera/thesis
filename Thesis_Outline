@@ -1,0 +1,19 @@
+Thesis
+Introduction
+Related Works
+Background
+	What is a representative HPC environment?
+	*img Abstract HPC System
+	3 shared resources to the system
+		To determine where security mechanisms need to be enforced we must first determine where data sharing can occur. For this thesis a few constraints representative of modern HPC system use-cases are used to limit where, in practical and common system configurations, data sharing can occur. Beginning from the least constrained set, there are three major locations of possible data sharing: compute node boards, network infrastructure, and persistent storage.
+		boards
+			In HPC systems compute nodes are computing machines dedicated to spending the majority of CPU time on user applications. These machines come in numerous forms. Common rack mounted servers and power dense blade servers are common. System boards with numerous Graphics Processing Units (GPUs) are a now growing segment. The shared qualities of these systems is that they posess: a processing unit, local memory, and a networking connection to the greater system.
+			
+			It is uncommon for boards to be shared by different user applications. The primary reason being the fault of a single user application can cause instability for the entire board. A cleverly malicious user could potentially create and submit numerous small job (or in some way game the node scheduling system) such that their intentionally failing code is located across numerous boards. By enforcing board level separation this type of failure caused denial of service is avoided. For this reason board separation is common, coincidentally this also removes boards as shared resources in the abstract HPC System.  
+		network
+		persistent storage 	
+Problem Space
+Solution Domain
+Implementation
+Performance Measurement
+Future Work
