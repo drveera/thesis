@@ -5,13 +5,20 @@ Background
 	What is a representative HPC environment?
 	*img Abstract HPC System
 	3 shared resources to the system
-		To determine where security mechanisms need to be enforced we must first determine where data sharing can occur. For this thesis a few constraints representative of modern HPC system use-cases are used to limit where, in practical and common system configurations, data sharing can occur. Beginning from the least constrained set, there are three major locations of possible data sharing: compute node boards, network infrastructure, and persistent storage.
+		To determine where security mechanisms need to be enforced we must first determine where data sharing can occur. For this thesis a few constraints representative of modern HPC system use-cases are used to limit where, in practical and common system configurations, data sharing can occur. Beginning from the least constrained set, there are three major locations of possible data sharing: compute node boards, persistent storage, and network infrastructure.
 		boards
-			In HPC systems compute nodes are computing machines dedicated to spending the majority of CPU time on user applications. These machines come in numerous forms. Common rack mounted servers and power dense blade servers are common. System boards with numerous Graphics Processing Units (GPUs) are a now growing segment. The shared qualities of these systems is that they posess: a processing unit, local memory, and a networking connection to the greater system.
+			In HPC systems compute nodes are computing machines dedicated to spending the majority of CPU time on user applications. These machines come in numerous forms. Rack mounted servers and power dense blade servers are common. System boards with numerous Graphics Processing Units (GPUs) are a now growing segment. The shared qualities of these systems is that they posses: a processing unit, local memory, and a networking connection to the greater system.
 			
 			It is uncommon for boards to be shared by different user applications. The primary reason being the fault of a single user application can cause instability for the entire board. A cleverly malicious user could potentially create and submit numerous small job (or in some way game the node scheduling system) such that their intentionally failing code is located across numerous boards. By enforcing board level separation this type of failure caused denial of service is avoided. For this reason board separation is common, coincidentally this also removes boards as shared resources in the abstract HPC System.  
-		network
+		
 		persistent storage 	
+		Inline Media Encryptor - Approved by the NSA - http://www.nsa.gov/ia/programs/inline_media_encryptor/index.shtml
+		Megacryption - http://www.aspg.com/pdfs/MegaCryptionBrochure.pdf
+		http://www.youtube.com/watch?feature=player_embedded&v=raNx9L4VH2k
+		
+			While compute nodes within HPC systems often contain their own persistent storage hard drives (though not all do, consider what are called "diskless" nodes), these disks are rarely used to store permanent data. More often compute node disks are used as a form of intermediary memory for large computations where the data cannot be fully contained within volatile memory. The term persistent storage is more commonly used in reference to arrays of disks available to the compute nodes via the network infrastructure. 
+		network
+		
 Problem Space
 Solution Domain
 Implementation
