@@ -19,8 +19,26 @@ $\tab \hspace*{5.9em} \mathcal{A}\rightarrow W\mathcal{A} |W\rbrace$\\
 
 This base grammar, through the non-terminal symbols and production rules, establishes a means of generating the base language form of unordered windows ($W\in V^1$) in an arbitrary length such as $WW$ or $WWWWW$.
 
-Next, we generate the \emph{S} specific definitions:\\
+Next, we generate the \emph{S} specific definitions. To do so it is first necessary to define notation for two special terminal symbols and three special sets:\\
+\\
+$o_{s,i}$ - an open command issued to element $i$ within security group $s$,\\
+$a_{s,i}$ - an acknowledgement received from element $i$ within security group $s$,\\
+$\theta_s$ - the set of all $o_{s,i}$ terminals for security group $s$, \\
+$\alpha_s$ - the set of all $a_{s,i}$ terminals for security group $s$, and \\
+$\pi(A)$ - the set of all permutations of the set A.\\
 
+These definitions allow us to define a final, special set:\\
+\\
+$\Lambda_s = \pi(\theta_s) \times \pi(\alpha_s)$\\
+
+Intuitively, $\Lambda_s$ is a set of ordered sets expressing each permutation of the $\theta_s$ set matched with each permutation of the $\alpha_s$ set. For example, given a security group $s$ made up of two elements s.t. $s = \{1, 2\}$, $\Lambda_s$ is defined:\\
+\\
+$\Lambda_s = \{ (o_{s,1}, o_{s,2}, a_{s,1}, a_{s,2}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,1}, a_{s,2}),$\\
+\hspace*{3.0em}$ (o_{s,1}, o_{s,2}, a_{s,2}, a_{s,1}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,2}, a_{s,1})\}$\\
+\\
+The sets within $\Lambda_s$ represent all legitimate command sequences within a window ($W$) for security group $s$. A key property of the sets within $\Lambda_s$ is that each element within the security group is issued an open command, in any order, followed by acknowledgements from each element within the security group, once again in any order.
+
+With these definitions established we can now formally define an $\emph{S}$ specific grammar:
 
 \tab $G^2 = (V^2, \Sigma^2, R^2, \emptyset)$, where
 
@@ -28,12 +46,10 @@ Next, we generate the \emph{S} specific definitions:\\
 
 \tab $\Sigma ^2 = \{[o_{s,i}, a_{s,i}]:\forall i \in \forall s\in \emph{S}\}$
 
-\tab $R^2 = \{[W\rightarrow \Bigg (\displaystyle \prod_{i=1}^{\forall i\in s} o_{s,i} \displaystyle \prod_{j=1}^{\forall j\in s} a_{s,i}\Bigg ) ] :\forall s\in \emph{S}\}$
+\tab $R^2 = \{[W\rightarrow \lambda  ] :\forall \lambda \in \Lambda_s :\forall s\in \emph{S}\}$
 
 
 These definitions add new terminal symbols and the necessary production rules to generate them. 
-
-The terminal symbols are of the form $o_{s,i}$ and $a_{s,i}$. $o_{s,i}$ represents an open command issued to a compute node $i$ within security group $s$. $a_{s,i}$ represents a corresponding acknowledgement.
 
 The production rules are slightly more complex to generate. For every security group $s\in S$
 
