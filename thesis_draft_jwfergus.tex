@@ -1,7 +1,7 @@
 \documentclass{article}
 \newcommand{\tab}{\hspace*{2em}}
 \usepackage[english]{babel}
-\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist}
+\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,chngpage}
 
 \begin{document}
 
@@ -45,6 +45,32 @@ user accessible front-end or a job scheduler
 \item \textbf{network infrastructure} \hfill \\
 \end{enumerate}
 \subsection{Security Challenge}
+
+\begin{table}
+\begin{adjustwidth}{-4em}{-4em}
+\centering
+\begin{tabular}{ccc|c|c|}
+& & \multicolumn{3}{ c }{\textbf{Solutions}} \\ \cline{3-5}
+\centering\arraybackslash \textbf{Hardware Location} &  \multicolumn{1}{ c| }{\centering\arraybackslash \textbf{Security Challenge}} & \multicolumn{1}{ b{1.65cm}| }{\centering\arraybackslash Board Separation} & \multicolumn{1}{ b{.6cm}| }{\centering\arraybackslash IME} & \multicolumn{1}{ b{1.97cm}| }{\centering\arraybackslash Posix \hspace{2em}Permissions}   \\ \cline{1-5}
+\multicolumn{1}{ |c| }{\multirow{2}{*}{Compute Nodes} } &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Local Data Storage} & \checkmark &   & \checkmark         \\ \cline{2-5}
+\multicolumn{1}{ |c  }{}                        &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Local Data Processing} & \checkmark &   &  \checkmark        \\ \cline{1-5}
+\multicolumn{1}{ |c|  }{Persistent Storage}  &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Co-location of user data} &  &  \checkmark & \checkmark   \\ \cline{1-5}
+\multicolumn{1}{ |c|  }{Administrative Node}  &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Accept and Schedule User Jobs} &   &   & \checkmark   \\ \cline{1-5}
+\multicolumn{1}{ |c|  }{\multirow{6}{*}{Network Infrastructure}} &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Transmit intra-application data between compute nodes} &   &   &       \\ \cline{2-5}
+\multicolumn{1}{ |c  }{}                        &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Transmit data to/from compute nodes and persistent storage} &   &   &       \\ \cline{2-5}
+\multicolumn{1}{ |c  }{}                        &
+\multicolumn{1}{ |p{5cm}| }{\centering\arraybackslash Transmit commands from scheduler to compute nodes} &   &   &       \\ \cline{1-5}
+\end{tabular}
+\caption{Security challenges and technology used to solve them}
+\label{tab:security_challenges}
+\end{adjustwidth}
+\end{table}
 
 The security fear of customers with sensitive data is that a different customer could, through chance or intention, acquire or manipulate their data. There exist three main mediums across which data may be exposed. 
 \section{Design Goals}
