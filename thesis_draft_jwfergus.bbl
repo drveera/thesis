@@ -1,0 +1,36 @@
+\begin{thebibliography}{1}
+
+\bibitem{arackal2009access}
+V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
+  R.~Sridharan, and S.~Chattopadhyay.
+\newblock An access mechanism for grid garuda.
+\newblock In {\em Internet Multimedia Services Architecture and Applications
+  (IMSAA), 2009 IEEE International Conference on}, pages 1--6. IEEE, 2009.
+
+\bibitem{buyya1999high}
+R.~Buyya.
+\newblock {\em High Performance Cluster Computing: Architectures and Systems},
+  volume~1.
+\newblock Prentice Hall, Upper SaddleRiver, NJ, USA, 1999.
+
+\bibitem{jackson2006demand}
+D.B. Jackson.
+\newblock On-demand access to compute resources, April~7 2006.
+\newblock US Patent App. 11/279,007.
+
+\bibitem{katz1989disk}
+R.H. Katz, G.A. Gibson, and D.A. Patterson.
+\newblock Disk system architectures for high performance computing.
+\newblock {\em Proceedings of the IEEE}, 77(12):1842 --1858, 1989.
+
+\bibitem{keller2001anatomy}
+A.~Keller and A.~Reinefeld.
+\newblock Anatomy of a resource management system for hpc clusters.
+\newblock {\em Annual Review of Scalable Computing}, 3(1):1--31, 2001.
+
+\bibitem{leavitt2012big}
+N.~Leavitt.
+\newblock Big iron moves toward exascale computing.
+\newblock {\em Computer}, 45(11):14--17, 2012.
+
+\end{thebibliography}

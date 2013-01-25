@@ -1,7 +1,8 @@
 \documentclass{article}
+\bibliographystyle{plain}
 \newcommand{\tab}{\hspace*{2em}}
 \usepackage[english]{babel}
-\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,chngpage}
+\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,chngpage,url}
 
 \begin{document}
 
@@ -10,10 +11,10 @@
 \date{\today}
 \maketitle
 \begin{abstract}
-As the scale of data used in computation increases the utility of High Performance Computing as a Service increases in tandem. Security concerns in such a domain are still being solved using traditional Operating System mechanisms of memory protection and file access privileges [5]. However there exist scenarios where customers demand more intuitive and rigorously verifiable security solutions. This paper presents a robust and application transparent network security solution that is both intuitive and easily verifiable. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
+As the scale of data used in computation increases the utility of High Performance Computing as a Service increases in tandem. Security concerns in such a domain are still being solved using traditional Operating System mechanisms of memory protection and file access privileges ~\cite{buyya1999high}. However there exist scenarios where customers demand more intuitive and rigorously verifiable security solutions. This paper presents a robust and application transparent network security solution that is both intuitive and easily verifiable. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 \end{abstract}
 \section{Introduction}
-High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia [4], though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized [5]. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges [5]. 
+High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia ~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized ~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges ~\cite{buyya1999high}. 
 
 With the increase in scale of data used in computation, and big data problems becoming more common, the utility of High Performance Computing as a Service increases. There exist customers in this domain with sensitive data (government laboratories, national defense contractors, etc.) for which traditional security mechanisms are not satisfactory to all stakeholders. Historically this class of customers devotes entire HPC systems to individual projects. With looming cuts in government discretionary spending there is pressure on these organizations to find more cost effective methods for their research without sacrificing security. 
 
@@ -36,12 +37,14 @@ There are four basic resources in most HPC systems represented in Figure~\ref{fi
 \item relaying data between other compute nodes working in tandem on the same user application;
 \item and sending or receiving commands (or reports, as the case may be) from the administrative nodes, through which users interact.
 \end{inparaenum}
-\item \textbf{persistent storage} - storage devices usually of much larger capacity than the compute nodes are capable of. \begin{inparaenum}[\itshape a\upshape)]
-\item ;
+\item \textbf{persistent storage} - storage devices (usually of much higher capacity than the compute nodes) capable of storing large quantities of user application data, User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. 
+\item \textbf{administrative nodes} - computing devices where \begin{inparaenum}[\itshape a\upshape)]
+\item both administrators and users interact with the system, common tasks of which include issuing job or system commands, accessing reports and results, and performing maintenance;
+\item resource management software is centrally located and executed ~\cite{keller2001anatomy}, common examples include IBM's Tivoli Workload Scheduler and the MOAB Cluster Suite by Adaptive Computing ~\cite{arackal2009access}~\cite{jackson2006demand};
 \item .
 \end{inparaenum}
-\item \textbf{administrative nodes} \hfill \\
-user accessible front-end or a job scheduler
+
+
 \item \textbf{network infrastructure} \hfill \\
 \end{enumerate}
 \subsection{Security Challenge}
@@ -188,4 +191,8 @@ Finally, the language our mechanism accepts for security group \emph{S} can be f
 \section{Conclusion}
 \subsection{Further Work}
 Implement dynamic scheduling algorithm on the window scheduler using memory usage statistics from compute nodes. 
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
 \end{document}
