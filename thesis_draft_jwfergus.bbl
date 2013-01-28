@@ -7,6 +7,14 @@ V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
 \newblock In {\em Internet Multimedia Services Architecture and Applications
   (IMSAA), 2009 IEEE International Conference on}, pages 1--6. IEEE, 2009.
 
+\bibitem{bozzo2006design}
+M.~Bozzo-Rey, M.~Jeanson, M.N. Nguyen, C.~Gauthier, M.~Barrette, P.~Vachon,
+  K.~Gaven-Venet, H.Z. Lu, S.~Allen, and A.~Veilleux.
+\newblock Design, deployment and bench of a large infiniband hpc cluster.
+\newblock In {\em High-Performance Computing in an Advanced Collaborative
+  Environment, 2006. HPCS 2006. 20th International Symposium on}, pages 8--8.
+  IEEE, 2006.
+
 \bibitem{buyya1999high}
 R.~Buyya.
 \newblock {\em High Performance Cluster Computing: Architectures and Systems},
@@ -32,5 +40,12 @@ A.~Keller and A.~Reinefeld.
 N.~Leavitt.
 \newblock Big iron moves toward exascale computing.
 \newblock {\em Computer}, 45(11):14--17, 2012.
+
+\bibitem{madai2010performance}
+B.~Madai and R.~Al-Shaikh.
+\newblock Performance modeling and mpi evaluation using westmere-based
+  infiniband hpc cluster.
+\newblock In {\em Computer Modeling and Simulation (EMS), 2010 Fourth UKSim
+  European Symposium on}, pages 363--368. IEEE, 2010.
 
 \end{thebibliography}

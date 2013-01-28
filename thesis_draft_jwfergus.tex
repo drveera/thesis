@@ -40,11 +40,9 @@ There are four basic resources in most HPC systems represented in Figure~\ref{fi
 \item \textbf{persistent storage} - storage devices (usually of much higher capacity than the compute nodes) capable of storing large quantities of user application data. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. 
 \item \textbf{administrative nodes} - computing devices where \begin{inparaenum}[\itshape a\upshape)]
 \item both administrators and users interact with the system, common tasks of which include issuing job or system commands, accessing reports and results, and performing maintenance;
-\item resource management software is centrally located and executed ~\cite{keller2001anatomy}, common examples include IBM's Tivoli Workload Scheduler and the MOAB Cluster Suite by Adaptive Computing ~\cite{arackal2009access}~\cite{jackson2006demand}.
+\item resource management software is centrally located and executed ~\cite{keller2001anatomy}, common examples include IBM's Tivoli Workload Scheduler and the MOAB Cluster Suite by Adaptive Computing \cite{arackal2009access}\cite{jackson2006demand}.
 \end{inparaenum}
-
-
-\item \textbf{network infrastructure} \hfill \\
+\item \textbf{network infrastructure} - devices facilitating the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. 
 \end{enumerate}
 \subsection{Security Challenge}
 
@@ -127,6 +125,19 @@ Validate the closure of the previous time window
 Communicate the next time window states to compute nodes
 To determine the network access states for the next time window the scheduler must run a scheduling algorithm on a few historical inputs. The base case scheduling algorithm is round robin (i.e., equal window size for each security group). To improve performance, a number of heuristics have been considered for the creation of a dynamic priority scheduling algorithm: the egress controller memory usage of compute nodes, number of TCP timeouts, and externally imposed priorities. 
 \section{Case Study}
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{node_state_diagram.pdf}
+\caption{State diagram of a compute node.}
+\label{fig:node_state_diagram}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{control_state_diagram.pdf}
+\caption{State diagram of an example window controller.}
+\label{fig:control_state_diagram}
+\end{figure}
+
 \subsection{Performance}
 \subsection{Security Validation}
 \section{Formal Definition}

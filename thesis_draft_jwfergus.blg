@@ -1,50 +1,50 @@
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: thesis_draft_jwfergus.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 39 of file thesis_draft_jwfergus.aux
+Illegal, another \bibstyle command---line 41 of file thesis_draft_jwfergus.aux
  : \bibstyle
  :          {plain}
 I'm skipping whatever remains of this command
 Database file #1: bibliography.bib
-You've used 6 entries,
+You've used 8 entries,
             2118 wiz_defined-function locations,
-            539 strings with 4953 characters,
-and the built_in function-call counts, 1970 in all, are:
-= -- 191
-> -- 90
-< -- 2
-+ -- 37
-- -- 30
-* -- 140
-:= -- 333
-add.period$ -- 19
-call.type$ -- 6
-change.case$ -- 32
+            550 strings with 5531 characters,
+and the built_in function-call counts, 3072 in all, are:
+= -- 301
+> -- 156
+< -- 4
++ -- 63
+- -- 54
+* -- 219
+:= -- 503
+add.period$ -- 27
+call.type$ -- 8
+change.case$ -- 50
 chr.to.int$ -- 0
-cite$ -- 6
-duplicate$ -- 71
-empty$ -- 159
-format.name$ -- 30
-if$ -- 409
+cite$ -- 8
+duplicate$ -- 113
+empty$ -- 235
+format.name$ -- 54
+if$ -- 651
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 6
-newline$ -- 33
-num.names$ -- 12
-pop$ -- 37
+int.to.str$ -- 8
+missing$ -- 8
+newline$ -- 43
+num.names$ -- 16
+pop$ -- 61
 preamble$ -- 1
-purify$ -- 27
+purify$ -- 43
 quote$ -- 0
-skip$ -- 48
+skip$ -- 79
 stack$ -- 0
-substring$ -- 112
-swap$ -- 13
-text.length$ -- 2
+substring$ -- 170
+swap$ -- 31
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 22
+type$ -- 30
 warning$ -- 0
-while$ -- 20
-width$ -- 7
-write$ -- 69
+while$ -- 30
+width$ -- 9
+write$ -- 93
 (There was 1 error message)
