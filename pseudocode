@@ -1,0 +1,58 @@
+function window_controller:
+	scheduler.initialize();
+	security_group := scheduler.get_next_group();
+	security_group.state := STATE.OPEN;
+	foreach node in security_group:
+		send(node.address, security_group.crypto_sign(COMMAND.OPEN));
+		node.state := STATE.OPEN;
+	while( security_group.state == STATE.OPEN ):
+		block_on_receive( node_response );
+		if node_response.state == STATE.CLOSED
+			node.state := STATE.CLOSED;
+		else 
+			throw ERROR.UNCLOSED_NODE;
+		security_group.state := STATE.CLOSED;
+		foreach node in security_group:
+			if node.state == STATE.OPEN
+				security_group.state := STATE.OPEN;
+
+\begin{algorithm}
+	\caption{Window Controller opening and closing network access windows.}
+	\label{alg:window_controller}
+	\begin{algorithmic}[1]
+	\Statex
+	\Function{$Open\_Windows$}{$Scheduler$}
+		\State $Scheduler.initialize();$
+		\While{$End\_Command\_Not\_Received$}
+			\State $Security\_Group \gets Scheduler.get\_next\_group();$
+			\State $Security\_Group.state \gets \textsc{state.open};$
+			\ForAll {$node \in Security\_Group$}
+				\State $send(node.address,$ \par
+	        \hskip\algorithmicindent\hspace{3em} $Security\_Group.crypto\_sign(\textsc{command.open}));$
+        \State $node.state \gets \textsc{state.open};$
+			\EndFor
+			\While{$Security\_Group.state == \textsc{state.open}$}
+				\State $node\_response \gets block\_on\_receive\_message();$
+				\If{$node\_response.state == \textsc{state.closed}$} 
+					\State $node.state \gets \textsc{state.closed};$
+				\Else 
+					\State $\textbf{throw}\hspace{.6em} \textsc{error.unclosed\_node};$
+				\EndIf
+				\State $Security\_Group.state \gets \textsc{state.closed};$
+				\ForAll {$node \in security_group$}
+					\If{$node.state == \textsc{state.open}$}
+						\State $Security\_Group.state \gets \textsc{state.open};$
+					\EndIf
+				\EndFor
+				
+			\EndWhile
+		\EndWhile
+
+	\EndFunction
+
+	\end{algorithmic}
+\end{algorithm}
+				
+				
+
+function			

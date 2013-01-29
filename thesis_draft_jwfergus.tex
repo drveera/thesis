@@ -2,7 +2,11 @@
 \bibliographystyle{plain}
 \newcommand{\tab}{\hspace*{2em}}
 \usepackage[english]{babel}
-\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,chngpage,url}
+\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array}
+\usepackage[noend]{algpseudocode}
+\usepackage{chngpage,url,algorithm}
+
+\renewcommand{\algorithmicforall}{\textbf{for each}}
 
 \begin{document}
 
@@ -86,6 +90,42 @@ The final and most important requirement of this tool is that it provably perfor
 \section{Implementation}
 As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from the previous section.
 \subsection{Overview}
+\begin{algorithm}
+	\caption{Window Controller opening and closing network access windows.}
+	\label{alg:window_controller}
+	\begin{algorithmic}[1]
+	\Statex
+	\Function{$Open\_Windows$}{$Scheduler$}
+		\State $Scheduler.initialize();$
+		\While{$End\_Command\_Not\_Received$}
+			\State $Security\_Group \gets Scheduler.get\_next\_group();$
+			\State $Security\_Group.state \gets \textsc{state.open};$
+			\ForAll {$node \in Security\_Group$}
+				\State $send(node.address,$ \par
+	        \hskip\algorithmicindent\hspace{3em} $Security\_Group.crypto\_sign(\textsc{command.open}));$
+        \State $node.state \gets \textsc{state.open};$
+			\EndFor
+			\While{$Security\_Group.state == \textsc{state.open}$}
+				\State $node\_response \gets block\_on\_receive\_message();$
+				\If{$node\_response.state == \textsc{state.closed}$} 
+					\State $node.state \gets \textsc{state.closed};$
+				\Else 
+					\State $\textbf{throw}\hspace{.6em} \textsc{error.unclosed\_node};$
+				\EndIf
+				\State $Security\_Group.state \gets \textsc{state.closed};$
+				\ForAll {$node \in security_group$}
+					\If{$node.state == \textsc{state.open}$}
+						\State $Security\_Group.state \gets \textsc{state.open};$
+					\EndIf
+				\EndFor
+				
+			\EndWhile
+		\EndWhile
+
+	\EndFunction
+
+	\end{algorithmic}
+\end{algorithm}
 The tool is composed of four major components:  the window scheduler, ingress controller, egress controller, and the state controller. The window scheduler can be located on any administrative node within the system, preferably co-located with the system job scheduler. The remaining controllers are located throughout the HPC environment, with a copy on each compute node that is designated to execute user applications. 
 
 The system provides enhanced security by time dividing access to the network according to security groups. As jobs are scheduled on the system, the window scheduler must be informed of the intended location and their assigned security group. As jobs are run on compute nodes throughout the system the window scheduler communicates with the state controller on each node to designate time windows. During any individual time window only one security group has authorization to access the network. For any given time window in which a security group does not have access to the network, outgoing network packets are stored in a local queue while incoming packets are just ignored and deleted. The window scheduler is tasked with alternating time window authorization between security groups.
