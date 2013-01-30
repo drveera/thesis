@@ -54,5 +54,33 @@ function window_controller:
 \end{algorithm}
 				
 				
-
-function			
+\begin{algorithm}
+	\caption{Node Control Mechanism opening and closing access to the network.}
+	\label{alg:node_controller}
+	\begin{algorithmic}[1]
+		\Statex
+		\Function{$Node\_Control\_Mechanism$}{}
+			\State $Queue \gets initialize\_queue;$
+			\While{$exit\_command\_not\_received$}
+				\State $Close\_Network\_Access(Queue);$
+				\While {$open\_command\_not\_received$}
+					\State $message \gets block\_on\_receive\_message();$
+				\EndWhile
+				\State $Open\_Network\_Access(Queue);$
+				\State $sleep(message.time);$
+				\State $Close\_Network\_Access(Queue);$
+				\State $send\_acknowledgement();$
+			\EndWhile
+		\EndFunction
+	
+		\Function{$Close\_Network\_Access$}{$Queue$}
+			\State $Network\_Egress.enqueue(Queue);$
+			\State $Network\_Ingress.drop\_packets();$
+		\EndFunction
+		\Function{$Open\_Network\_Access$}{$Queue$}
+			\State $Network\_Ingress.accept\_packets();$
+			\State $Queue.process\_packets();$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}	
+		

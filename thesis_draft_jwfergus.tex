@@ -4,9 +4,10 @@
 \usepackage[english]{babel}
 \usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array}
 \usepackage[noend]{algpseudocode}
-\usepackage{chngpage,url,algorithm}
+\usepackage{chngpage,url,algorithm,algorithmicx}
 
 \renewcommand{\algorithmicforall}{\textbf{for each}}
+%\algrenewcommand{\algorithmiccomment}[1]{\hfill$\blacktriangleright$ #1}
 
 \begin{document}
 
@@ -113,7 +114,7 @@ As a proof of concept we have implemented a version of the tool for the Linux op
 					\State $\textbf{throw}\hspace{.6em} \textsc{error.unclosed\_node};$
 				\EndIf
 				\State $Security\_Group.state \gets \textsc{state.closed};$
-				\ForAll {$node \in security_group$}
+				\ForAll {$node \in Security\_Group$}
 					\If{$node.state == \textsc{state.open}$}
 						\State $Security\_Group.state \gets \textsc{state.open};$
 					\EndIf
@@ -126,6 +127,38 @@ As a proof of concept we have implemented a version of the tool for the Linux op
 
 	\end{algorithmic}
 \end{algorithm}
+
+\begin{algorithm}
+	\caption{Node Control Mechanism opening and closing access to the network.}
+	\label{alg:node_controller}
+	\begin{algorithmic}[1]
+		\Statex
+		\Function{$Node\_Control\_Mechanism$}{}
+			\State $Queue \gets initialize\_queue;$
+			\While{$exit\_command\_not\_received$}
+				\State $Close\_Network\_Access(Queue);$
+				\While {$open\_command\_not\_received$}
+					\State $message \gets block\_on\_receive\_message();$
+				\EndWhile
+				\State $Open\_Network\_Access(Queue);$
+				\State $sleep(message.time);$
+				\State $Close\_Network\_Access(Queue);$
+				\State $send\_acknowledgement();$
+			\EndWhile
+		\EndFunction
+		\Statex
+		\Function{$Close\_Network\_Access$}{$Queue$}
+			\State $Network\_Egress.enqueue(Queue);$
+			\State $Network\_Ingress.drop\_packets();$
+		\EndFunction
+		\Statex
+		\Function{$Open\_Network\_Access$}{$Queue$}
+			\State $Network\_Ingress.accept\_packets();$
+			\State $Queue.process\_packets();$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}	
+		
 The tool is composed of four major components:  the window scheduler, ingress controller, egress controller, and the state controller. The window scheduler can be located on any administrative node within the system, preferably co-located with the system job scheduler. The remaining controllers are located throughout the HPC environment, with a copy on each compute node that is designated to execute user applications. 
 
 The system provides enhanced security by time dividing access to the network according to security groups. As jobs are scheduled on the system, the window scheduler must be informed of the intended location and their assigned security group. As jobs are run on compute nodes throughout the system the window scheduler communicates with the state controller on each node to designate time windows. During any individual time window only one security group has authorization to access the network. For any given time window in which a security group does not have access to the network, outgoing network packets are stored in a local queue while incoming packets are just ignored and deleted. The window scheduler is tasked with alternating time window authorization between security groups.
