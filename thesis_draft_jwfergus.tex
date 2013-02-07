@@ -1,8 +1,8 @@
-\documentclass{article}
+\documentclass{llncs}
 \bibliographystyle{plain}
 \newcommand{\tab}{\hspace*{2em}}
 \usepackage[english]{babel}
-\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array}
+\usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,color}
 \usepackage[noend]{algpseudocode}
 \usepackage{chngpage,url,algorithm,algorithmicx}
 
@@ -19,11 +19,16 @@
 As the scale of data used in computation increases the utility of High Performance Computing as a Service increases in tandem. Security concerns in such a domain are still being solved using traditional Operating System mechanisms of memory protection and file access privileges ~\cite{buyya1999high}. However there exist scenarios where customers demand more intuitive and rigorously verifiable security solutions. This paper presents a robust and application transparent network security solution that is both intuitive and easily verifiable. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 \end{abstract}
 \section{Introduction}
-High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia ~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized ~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges ~\cite{buyya1999high}. 
+High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges~\cite{buyya1999high}. 
 
-With the increase in scale of data used in computation, and big data problems becoming more common, the utility of High Performance Computing as a Service increases. There exist customers in this domain with sensitive data (government laboratories, national defense contractors, etc.) for which traditional security mechanisms are not satisfactory to all stakeholders. Historically this class of customers devotes entire HPC systems to individual projects. With looming cuts in government discretionary spending there is pressure on these organizations to find more cost effective methods for their research without sacrificing security. 
+\textcolor{red}{-*-*-*-*-*-BEGIN new paragraph-*-*-*-*-*-}
 
-This paper presents Time Division Multiplexing (TDM) of network access as one such verifiable security mechanism. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. [Mention we have built a prototype, and mention formal proof.]
+
+Application developers for this domain of systems spans a broad spectrum, ranging from undergraduate students learning concurrent programming to defence contractors executing classified simulations. Moving towards the most demanding end of the spectrum, security concerns among application-side stakeholders increase and additional methods are employed to enforce information security. At some point along this spectrum stakeholders decide physical separation to satisfy security concerns. The reasons behind this can be numerous, but likely stem from two major goals: simplicity of implementation and verification; and risk aversion/management. It is undeniable that physical separation provides a level of information security that is hard to replicate through the use of software, however the financial costs are significant - devoting entire HPC systems to running jobs sequentially. 
+
+\textcolor{red}{-*-*-*-*-*-END new paragraph-*-*-*-*-*-}
+
+This paper presents Time Division Multiplexing (TDM) of network access as a viable alternative to physical separation. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. [Mention we have built a prototype, and mention formal proof.]
 \section{Related Work}
 \section{Problem Definition}
 
@@ -49,6 +54,7 @@ There are four basic resources in most HPC systems represented in Figure~\ref{fi
 \end{inparaenum}
 \item \textbf{network infrastructure} - devices facilitating the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. 
 \end{enumerate}
+\subsection{System Assumptions}
 \subsection{Security Challenge}
 
 \begin{table}
@@ -136,25 +142,27 @@ As a proof of concept we have implemented a version of the tool for the Linux op
 		\Function{$Node\_Control\_Mechanism$}{}
 			\State $Queue \gets initialize\_queue;$
 			\While{$exit\_command\_not\_received$}
-				\State $Close\_Network\_Access(Queue);$
+				\State $state \gets Close\_Network\_Access(Queue);$
 				\While {$open\_command\_not\_received$}
 					\State $message \gets block\_on\_receive\_message();$
 				\EndWhile
-				\State $Open\_Network\_Access(Queue);$
+				\State $state \gets Open\_Network\_Access(Queue);$
 				\State $sleep(message.time);$
-				\State $Close\_Network\_Access(Queue);$
-				\State $send\_acknowledgement();$
+				\State $state \gets Close\_Network\_Access(Queue);$
+				\State $send\_acknowledgement(state);$
 			\EndWhile
 		\EndFunction
 		\Statex
 		\Function{$Close\_Network\_Access$}{$Queue$}
-			\State $Network\_Egress.enqueue(Queue);$
-			\State $Network\_Ingress.drop\_packets();$
+			\State $state.egress \gets Network\_Egress.enqueue(Queue);$
+			\State $state.ingress \gets Network\_Ingress.drop\_packets();$
+			\State \Return{$state$}
 		\EndFunction
 		\Statex
 		\Function{$Open\_Network\_Access$}{$Queue$}
-			\State $Network\_Ingress.accept\_packets();$
-			\State $Queue.process\_packets();$
+			\State $state.ingress \gets Network\_Ingress.accept\_packets();$
+			\State $state.egress \gets Queue.process\_packets\_to\_network();$
+			\State \Return{$state$}
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}	
@@ -242,7 +250,7 @@ These definitions allow us to define a final, special set:\\
 \\
 $\Lambda_s = \pi(\theta_s) \times \pi(\alpha_s)$\\
 
-Intuitively, $\Lambda_s$ is a set of ordered sets expressing each permutation of the $\theta_s$ set matched with each permutation of the $\alpha_s$ set. For example, given a security group $s$ made up of two elements s.t. $s = \{1, 2\}$, $\Lambda_s$ is defined:\\
+Intuitively, $\Lambda_s$ is a set of ordered sets expressing each permutation of $\theta_s$ matched with each permutation of $\alpha_s$. For example, given a security group $s$ made up of two elements s.t. $s = \{1, 2\}$, $\Lambda_s$ is defined:\\
 \\
 $\Lambda_s = \{ (o_{s,1}, o_{s,2}, a_{s,1}, a_{s,2}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,1}, a_{s,2}),$\\
 \hspace*{3.0em}$ (o_{s,1}, o_{s,2}, a_{s,2}, a_{s,1}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,2}, a_{s,1})\}$\\
