@@ -15,8 +15,12 @@
 \author{Joshua Ferguson}
 \date{\today}
 \maketitle
-\begin{abstract}
-As the scale of data used in computation increases the utility of High Performance Computing as a Service increases in tandem. Security concerns in such a domain are still being solved using traditional Operating System mechanisms of memory protection and file access privileges ~\cite{buyya1999high}. However there exist scenarios where customers demand more intuitive and rigorously verifiable security solutions. This paper presents a robust and application transparent network security solution that is both intuitive and easily verifiable. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
+\begin{abstract}\textcolor{red}{-*-*-*-*-*-All new abstract-*-*-*-*-*-}
+It is commonly known that High Performance Computing (HPC) systems are most frequently used by multiple users for batch job, parallel computations. Less well known, however, are the numerous HPC systems servicing such sensitive data that administrators enforce either \begin{inparaenum}[\itshape a\upshape)] 
+\item sequential job processing - only one job at a time on the entire system, or
+\item physical separation - devoting an entire HPC system to a single project until recommissioned.
+\end{inparaenum}
+The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond \textcolor{red}{[??USE THIS LANGUAGE??]} industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 \end{abstract}
 \section{Introduction}
 High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges~\cite{buyya1999high}. 
@@ -30,9 +34,9 @@ Application developers for this domain of systems spans a broad spectrum, rangin
 
 This paper presents Time Division Multiplexing (TDM) of network access as a viable alternative to physical separation. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. [Mention we have built a prototype, and mention formal proof.]
 \section{Related Work}
-\section{Problem Definition}
+\section{Problem Definition}\textcolor{red}{-*-*-*-*-*-new paragraph-*-*-*-*-*-}
+We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
-We begin by defining an abstract HPC environment through which the general case of our security challenge is shown.
 \subsection{An Abstract HPC Environment}
 \begin{figure}
 \centering
@@ -45,16 +49,16 @@ There are four basic resources in most HPC systems represented in Figure~\ref{fi
 \item \textbf{compute nodes} - independent computing devices designated to run user submitted applications. These devices are capable of storing temporary data locally. They send and receive data across network infrastructure for three main purposes:\begin{inparaenum}[\itshape a\upshape)]
 \item storing or accessing data on the persistent storage devices;
 \item relaying data between other compute nodes working in tandem on the same user application;
-\item and sending or receiving commands (or reports, as the case may be) from the administrative nodes, through which users interact.
-\end{inparaenum}
-\item \textbf{persistent storage} - storage devices (usually of much higher capacity than the compute nodes) capable of storing large quantities of user application data. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. 
+\item and sending or receiving commands (or reports, as the case may be) from the administrative nodes, through which users interact.\end{inparaenum} 
+\textbf{Assumptions: }it is assumed that these compute nodes do not co-locate user applications (e.g., two different user applications are running in the same system memory) and that user applications are not given administrative access at this level. No assumption is made about the use of virtual machines on compute nodes.
+\item \textbf{persistent storage} - storage devices (usually of much higher capacity than the compute nodes) capable of storing large quantities of user application data. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. \textbf{Assumptions: } it is assumed that Inline Media Encryptors (IMEs) and Posix permissions are used to enforce data access rules within persistent storage~\cite{nsa_ime}. IMEs have been certified for use in classified networks by the U.S. National Security Administration since 2006~\cite{nsa_ime_website}. 
 \item \textbf{administrative nodes} - computing devices where \begin{inparaenum}[\itshape a\upshape)]
 \item both administrators and users interact with the system, common tasks of which include issuing job or system commands, accessing reports and results, and performing maintenance;
 \item resource management software is centrally located and executed ~\cite{keller2001anatomy}, common examples include IBM's Tivoli Workload Scheduler and the MOAB Cluster Suite by Adaptive Computing \cite{arackal2009access}\cite{jackson2006demand}.
-\end{inparaenum}
-\item \textbf{network infrastructure} - devices facilitating the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. 
+\end{inparaenum} \textbf{Assumptions: } it is assumed that the scheduler located here is capable of providing access to the list of current running applications and the hardware resources devoted to them. 
+\item \textbf{network infrastructure} - devices facilitating the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. \textbf{Assumptions: } It is assumed that the network infrastructure uses Internet Protocol to communicate among nodes.
 \end{enumerate}
-\subsection{System Assumptions}
+
 \subsection{Security Challenge}
 
 \begin{table}

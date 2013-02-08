@@ -1,4 +1,11 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{nsa_ime_website}
+United States National~Security Administration.
+\newblock Inline media encryptor.
+\newblock
+  \url{http://www.nsa.gov/ia/programs/inline_media_encryptor/index.shtml},
+  January 2009.
 
 \bibitem{arackal2009access}
 V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
@@ -20,6 +27,12 @@ R.~Buyya.
 \newblock {\em High Performance Cluster Computing: Architectures and Systems},
   volume~1.
 \newblock Prentice Hall, Upper SaddleRiver, NJ, USA, 1999.
+
+\bibitem{nsa_ime}
+G.N. Cohen, B.~Kamenel, and C.M. Kubic.
+\newblock Security for integrated ip-atm/tactical-strategic networks.
+\newblock In {\em Military Communications Conference, 1996. MILCOM '96,
+  Conference Proceedings, IEEE}, volume~2, pages 456 --460 vol.2, oct 1996.
 
 \bibitem{jackson2006demand}
 D.B. Jackson.
