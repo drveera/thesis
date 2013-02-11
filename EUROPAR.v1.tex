@@ -4,7 +4,7 @@
 \usepackage[english]{babel}
 \usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,color}
 \usepackage[noend]{algpseudocode}
-\usepackage{chngpage,url,algorithm,algorithmicx}
+\usepackage{chngpage,url,algorithm,algorithmicx,wrapfig}
 
 \renewcommand{\algorithmicforall}{\textbf{for each}}
 %\algrenewcommand{\algorithmiccomment}[1]{\hfill$\blacktriangleright$ #1}
@@ -37,28 +37,60 @@ This paper presents Time Division Multiplexing (TDM) of network access as a viab
 \section{Problem Definition}\textcolor{red}{-*-*-*-*-*-new paragraph-*-*-*-*-*-}
 We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
-\subsection{An Abstract HPC Environment}
+\subsection{Environmental Assumptions}
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{abstract_hpc_environment.pdf}
 \caption{An abstract HPC environment.}
 \label{fig:abstract_hpc_environment}
 \end{figure}
-There are four basic resources in most HPC systems represented in Figure~\ref{fig:abstract_hpc_environment} as: 
-\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
-\item \textbf{compute nodes} - independent computing devices designated to run user submitted applications. These devices are capable of storing temporary data locally. They send and receive data across network infrastructure for three main purposes:\begin{inparaenum}[\itshape a\upshape)]
+There are four basic resources in most HPC systems represented in Figure~\ref{fig:abstract_hpc_environment} as \begin{inparaenum}[\itshape a\upshape)]
+\item compute nodes, \item persistent storage, \item administrative nodes, \item network infrastructure. Worth consideration also is the process of job allocation and the execution of jobs.\end{inparaenum}
+\subsubsection{Compute Nodes}
+Compute nodes are independent computing devices designated to run user submitted applications. These devices are capable of storing temporary data locally. They send and receive data across network infrastructure for three main purposes:\begin{inparaenum}[\itshape a\upshape)]
 \item storing or accessing data on the persistent storage devices;
 \item relaying data between other compute nodes working in tandem on the same user application;
 \item and sending or receiving commands (or reports, as the case may be) from the administrative nodes, through which users interact.\end{inparaenum} 
-\textbf{Assumptions: }it is assumed that these compute nodes do not co-locate user applications (e.g., two different user applications are running in the same system memory) and that user applications are not given administrative access at this level. No assumption is made about the use of virtual machines on compute nodes.
-\item \textbf{persistent storage} - storage devices (usually of much higher capacity than the compute nodes) capable of storing large quantities of user application data. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. \textbf{Assumptions: } it is assumed that Inline Media Encryptors (IMEs) and Posix permissions are used to enforce data access rules within persistent storage~\cite{nsa_ime}. IMEs have been certified for use in classified networks by the U.S. National Security Administration since 2006~\cite{nsa_ime_website}. 
-\item \textbf{administrative nodes} - computing devices where \begin{inparaenum}[\itshape a\upshape)]
+
+It is assumed that these compute nodes do not co-locate user applications (e.g., two different user applications are running in the same system memory) and that user applications are not given administrative access at this level. No assumption is made about the use of virtual machines on compute nodes.
+
+\begin{wrapfigure}{r}{0.3\textwidth}
+ \vspace{-25pt}
+  \begin{center}
+    \includegraphics[width=0.28\textwidth]{inline_media_encryptor.jpg}
+  \end{center}
+  \caption{The $KG-200$ Inline Media Encryptor, certified by the NSA for use in securing persistent storage~\cite{nsa_ime_website}.}
+\label{fig:inline_media_encryptor}
+\vspace{-25pt}
+\end{wrapfigure}
+
+\subsubsection{Persistent Storage}
+Persistent storage devices are capable of storing large quantities of user application data, and are usually of much higher capacity than the compute nodes. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. 
+
+It is assumed that Inline Media Encryptors (IMEs) and Posix permissions are used to enforce data access rules within persistent storage~\cite{nsa_ime}. IMEs have been certified for use in classified networks by the U.S. National Security Administration since 2006~\cite{nsa_ime_website}. 
+
+\subsubsection{Administrative Nodes}
+Administrative nodes are computing devices where \begin{inparaenum}[\itshape a\upshape)]
 \item both administrators and users interact with the system, common tasks of which include issuing job or system commands, accessing reports and results, and performing maintenance;
 \item resource management software is centrally located and executed ~\cite{keller2001anatomy}, common examples include IBM's Tivoli Workload Scheduler and the MOAB Cluster Suite by Adaptive Computing \cite{arackal2009access}\cite{jackson2006demand}.
-\end{inparaenum} \textbf{Assumptions: } it is assumed that the scheduler located here is capable of providing access to the list of current running applications and the hardware resources devoted to them. 
-\item \textbf{network infrastructure} - devices facilitating the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. \textbf{Assumptions: } It is assumed that the network infrastructure uses Internet Protocol to communicate among nodes.
-\end{enumerate}
+\end{inparaenum}
 
+It is assumed that the scheduler located here is capable of providing access to the list of current running applications and the hardware resources devoted to them. 
+\subsubsection{Network Infrastructure}
+Network infrastructure devices facilitate the transmission of data between nodes within the HPC system. Mediums vary widely and include copper, optical, and wireless. The most common technologies used in HPC environments are Ethernet and InfiniBand \cite{bozzo2006design}\cite{madai2010performance}. 
+
+It is assumed that the network infrastructure uses Internet Protocol to communicate among nodes.
+
+\begin{wrapfigure}{l}{0.4\textwidth}
+  \begin{center}
+    \includegraphics[width=0.38\textwidth]{application_model.pdf}
+  \end{center}
+  \caption{The assumed model of application execution in an HPC environment. $\alpha$ and $\beta$ are periods where execution is I/O bound, and $\varepsilon$ is the prominent period where execution is CPU bound.}
+\label{fig:inline_media_encryptor}
+\end{wrapfigure}
+
+\subsubsection{Job Execution}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vestibulum molestie leo ac fermentum. Donec convallis vehicula suscipit. Vivamus orci nibh, porttitor non blandit at, euismod quis orci. Quisque quis ipsum ut felis imperdiet consequat. Donec quis est felis, id tempus orci. Aenean sodales, magna sit amet vehicula scelerisque, nulla diam condimentum felis, in luctus lectus leo eget nunc. Morbi a urna lectus. Maecenas eget mi eros. Duis purus est, mattis non dignissim in, imperdiet ac quam. Nulla placerat, elit eget imperdiet varius, nunc metus aliquam ipsum, ut tempus arcu sapien et dui. Cras enim metus, blandit scelerisque posuere vehicula, feugiat ac felis.
 \subsection{Security Challenge}
 
 \begin{table}
@@ -96,8 +128,6 @@ Envisioning the tool as enabling a more secure form of HPCaaS, the type, number,
 Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this tool to be network fabric agnostic if the tool is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
 \subsection{User Application Transparent}
 A fundamental requirement of the tool is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our tool, given that it can also do so on a system not using our tool. 
-\subsection{Provably Secure}
-The final and most important requirement of this tool is that it provably perform its task. 
 \section{Implementation}
 As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from the previous section.
 \subsection{Overview}
@@ -224,6 +254,17 @@ To determine the network access states for the next time window the scheduler mu
 \end{figure}
 
 \subsection{Performance}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+ \vspace{-25pt}
+  \begin{center}
+    \includegraphics[width=0.48\textwidth]{wireshark.jpg}
+  \end{center}
+  \caption{An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - red and blue.}
+\label{fig:wireshark}
+\vspace{-25pt}
+\end{wrapfigure}
+
 \subsection{Security Validation}
 \section{Conclusion}
 \subsection{Further Work}
