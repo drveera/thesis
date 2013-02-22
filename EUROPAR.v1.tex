@@ -15,26 +15,24 @@
 \author{Joshua Ferguson}
 \date{\today}
 \maketitle
-\begin{abstract}\textcolor{red}{-*-*-*-*-*-All new abstract-*-*-*-*-*-}
-It is commonly known that High Performance Computing (HPC) systems are most frequently used by multiple users for batch job, parallel computations. Less well known, however, are the numerous HPC systems servicing such sensitive data that administrators enforce either \begin{inparaenum}[\itshape a\upshape)] 
+\begin{abstract}
+It is commonly known that High Performance Computing (HPC) systems are most frequently used by multiple users for batch job, parallel computations. Less well known, however, are the numerous HPC systems servicing such data so sensitive that administrators enforce either \begin{inparaenum}[\itshape a\upshape)] 
 \item sequential job processing - only one job at a time on the entire system, or
 \item physical separation - devoting an entire HPC system to a single project until recommissioned.
 \end{inparaenum}
-The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond \textcolor{red}{[??USE THIS LANGUAGE??]} industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
+The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 \end{abstract}
 \section{Introduction}
 High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges~\cite{buyya1999high}. 
 
-\textcolor{red}{-*-*-*-*-*-BEGIN new paragraph-*-*-*-*-*-}
 
 
-Application developers for this domain of systems spans a broad spectrum, ranging from undergraduate students learning concurrent programming to defence contractors executing classified simulations. Moving towards the most demanding end of the spectrum, security concerns among application-side stakeholders increase and additional methods are employed to enforce information security. At some point along this spectrum stakeholders decide physical separation to satisfy security concerns. The reasons behind this can be numerous, but likely stem from two major goals: simplicity of implementation and verification; and risk aversion/management. It is undeniable that physical separation provides a level of information security that is hard to replicate through the use of software, however the financial costs are significant - devoting entire HPC systems to running jobs sequentially. 
+Application developers for this domain of systems spans a broad spectrum, ranging from undergraduate students learning concurrent programming to defence contractors executing classified simulations. Moving towards the most demanding end of the spectrum, security concerns among application-side stakeholders increase and additional methods are employed to enforce information security. At some point along this spectrum stakeholders decide on physical separation to satisfy security concerns. The reasons behind this can be numerous, but likely stem from two major goals: simplicity of implementation and verification; and risk aversion/management. It is undeniable that physical separation provides a level of information security that is hard to replicate through the use of software, however the financial costs are significant - devoting entire HPC systems to running jobs sequentially. 
 
-\textcolor{red}{-*-*-*-*-*-END new paragraph-*-*-*-*-*-}
 
-This paper presents Time Division Multiplexing (TDM) of network access as a viable alternative to physical separation. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. [Mention we have built a prototype, and mention formal proof.]
+This paper presents Time Division Multiplexing (TDM) of network access as a viable alternative to physical separation. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. 
 \section{Related Work}
-\section{Problem Definition}\textcolor{red}{-*-*-*-*-*-new paragraph-*-*-*-*-*-}
+\section{Problem Definition}
 We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
 \subsection{Environmental Assumptions}
@@ -81,11 +79,11 @@ Network infrastructure devices facilitate the transmission of data between nodes
 
 It is assumed that the network infrastructure uses Internet Protocol to communicate among nodes.
 
-\begin{wrapfigure}{l}{0.4\textwidth}
+\begin{wrapfigure}{l}{0.5\textwidth}
   \begin{center}
-    \includegraphics[width=0.38\textwidth]{application_model.pdf}
+    \includegraphics[width=0.48\textwidth]{application_model.pdf}
   \end{center}
-  \caption{The assumed model of application execution in an HPC environment. $\alpha$ and $\beta$ are periods where execution is I/O bound, and $\varepsilon$ is the prominent period where execution is CPU bound.}
+  \caption{The assumed model of application execution in an HPC environment. $\alpha_{start}$ and $\alpha_{end}$ are periods where execution is I/O bound, and $\varepsilon$ is the prominent period where execution is CPU bound.}
 \label{fig:inline_media_encryptor}
 \end{wrapfigure}
 
@@ -128,6 +126,64 @@ Envisioning the tool as enabling a more secure form of HPCaaS, the type, number,
 Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this tool to be network fabric agnostic if the tool is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
 \subsection{User Application Transparent}
 A fundamental requirement of the tool is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our tool, given that it can also do so on a system not using our tool. 
+\section{Formal Definition}
+
+Suppose \emph{S} is a finite set of security groups, s.t. each security group $s\in S$ is made up of a number of compute nodes. Given \emph{S}, the language our mechanism operates on can be generated by a context free grammar. Because the language is dependent on the security groups \emph{S}, this grammar must be generated based on it. This is done in two steps:
+
+First, we define the base grammar:\\
+
+\tab $G^1 = (V^1, \Sigma^1, R^1, \mathcal{A})$, where
+
+\tab $V^1 = \{\mathcal{A} , W\}$ \hfill non-terminal symbols \hspace*{6em}
+
+\tab $\Sigma ^1 = \{ \emptyset\}$ \hfill terminal symbols\hspace*{6.3em}
+
+\tab $R^1 = \lbrace \hspace*{1.35em}\mathcal{A} \rightarrow \varepsilon ,$ \hfill rules of production \hspace*{6em} \\
+$\tab \hspace*{5.9em} \mathcal{A}\rightarrow W\mathcal{A} |W\rbrace$\\
+
+This base grammar, through the non-terminal symbols and production rules, establishes a means of generating the base language form of unordered windows ($W\in V^1$) in an arbitrary length such as $WW$ or $WWWWW$.
+
+Next, we generate the \emph{S} specific definitions. To do so it is first necessary to define notation for two special terminal symbols and three special sets:\\
+\\
+$o_{s,i}$ - an open command issued to node $i$ within security group $s$,\\
+$a_{s,i}$ - an acknowledgement received from node $i$ within security group $s$,\\
+$\theta_s$ - the set of all $o_{s,i}$ terminals for security group $s$, \\
+$\alpha_s$ - the set of all $a_{s,i}$ terminals for security group $s$, and \\
+$\pi(A)$ - the set of all permutations of the set A.\\
+
+These definitions allow us to define a final, special set:\\
+\\
+$\Lambda_s = \pi(\theta_s) \times \pi(\alpha_s)$\\
+
+Intuitively, $\Lambda_s$ is a set of ordered sets expressing each permutation of $\theta_s$ matched with each permutation of $\alpha_s$. For example, given a security group $s$ made up of two elements s.t. $s = \{1, 2\}$, $\Lambda_s$ is defined:\\
+\\
+$\Lambda_s = \{ (o_{s,1}, o_{s,2}, a_{s,1}, a_{s,2}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,1}, a_{s,2}),$\\
+\hspace*{3.0em}$ (o_{s,1}, o_{s,2}, a_{s,2}, a_{s,1}),\hspace*{1.0em} (o_{s,2}, o_{s,1}, a_{s,2}, a_{s,1})\}$\\
+
+The sets within $\Lambda_s$ represent all legitimate command sequences within a window ($W$) for security group $s$. The key property of the sets within $\Lambda_s$ is that each node within the security group is issued an open command, in any order, followed by acknowledgements from each node within the security group, once again in any order.
+
+With these definitions established we can now formally define an $\emph{S}$ specific grammar:
+
+\tab $G^2 = (V^2, \Sigma^2, R^2, \emptyset)$, where
+
+\tab $V^2 =\{W\}$
+
+\tab $\Sigma ^2 = \{[o_{s,i}, a_{s,i}]:\forall i \in \forall s\in \emph{S}\}$
+
+\tab $R^2 = \{[W\rightarrow \lambda  ] :\forall \lambda \in \Lambda_s :\forall s\in \emph{S}\}$
+
+
+These definitions add new terminal symbols and the necessary production rules to generate them. Note the use of $\Lambda_s$ in the production rules. These rules provide every possible command sequence possible for any window $W$ s.t. every node issued an open command is required to report back with an acknowledgement before continuation onto another window.
+
+Finally, the language our mechanism accepts for security group \emph{S} can be formed using the union of the previous two grammars:\\
+
+\tab $G = (V, \Sigma , R, \mathcal{A})$, where
+
+\tab $V = V^1\cup V^2$
+
+\tab $\Sigma = \Sigma ^1\cup \Sigma ^2$
+
+\tab $R = R^1\cup R^2$
 \section{Implementation}
 As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from the previous section.
 \subsection{Overview}
@@ -254,7 +310,15 @@ To determine the network access states for the next time window the scheduler mu
 \end{figure}
 
 \subsection{Performance}
-
+Here we attempt to quantify how the mechanism affects memory usage at the compute node level and effective bandwidth.
+\begin{description}
+    \item[$T_{on, n}$] Time, within a window, where compute node $n$ has access to the network.
+    \item[$T_{window}$] Length in time of a single window.
+    \item[$\Pi_{app, n}$] Speed at which the application on compute node $n$ generates network traffic.
+    \item[$\Pi_{NIC, n}$] Speed at which the NIC on compute node $n$ can transmit traffic onto the network.
+    
+    
+\end{description} 
 \begin{wrapfigure}{r}{0.5\textwidth}
  \vspace{-25pt}
   \begin{center}
