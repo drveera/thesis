@@ -14,6 +14,13 @@ V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
 \newblock In {\em Internet Multimedia Services Architecture and Applications
   (IMSAA), 2009 IEEE International Conference on}, pages 1--6. IEEE, 2009.
 
+\bibitem{borrill2007investigation}
+Julian Borrill, Leonid Oliker, John Shalf, and Hongzhang Shan.
+\newblock Investigation of leading hpc i/o performance using a
+  scientific-application derived benchmark.
+\newblock In {\em Supercomputing, 2007. SC'07. Proceedings of the 2007 ACM/IEEE
+  Conference on}, pages 1--12. IEEE, 2007.
+
 \bibitem{bozzo2006design}
 M.~Bozzo-Rey, M.~Jeanson, M.N. Nguyen, C.~Gauthier, M.~Barrette, P.~Vachon,
   K.~Gaven-Venet, H.Z. Lu, S.~Allen, and A.~Veilleux.
@@ -33,6 +40,12 @@ G.N. Cohen, B.~Kamenel, and C.M. Kubic.
 \newblock Security for integrated ip-atm/tactical-strategic networks.
 \newblock In {\em Military Communications Conference, 1996. MILCOM '96,
   Conference Proceedings, IEEE}, volume~2, pages 456 --460 vol.2, oct 1996.
+
+\bibitem{dean2009designs}
+J.~Dean.
+\newblock Designs, lessons and advice from building large distributed systems.
+\newblock Presented at Large-Scale Distributed Systems and Middleware (LADIS),
+  2009.
 
 \bibitem{jackson2006demand}
 D.B. Jackson.
@@ -60,5 +73,35 @@ B.~Madai and R.~Al-Shaikh.
   infiniband hpc cluster.
 \newblock In {\em Computer Modeling and Simulation (EMS), 2010 Fourth UKSim
   European Symposium on}, pages 363--368. IEEE, 2010.
+
+\bibitem{globus_toolkit}
+University of~Chicago.
+\newblock Globus toolkit homepage.
+\newblock \url{http://www.globus.org/toolkit/}, 2013.
+
+\bibitem{nordugrid}
+University of~Oslo.
+\newblock Nordugrid homepage.
+\newblock \url{http://www.nordugrid.org/}, 2013.
+
+\bibitem{sandholm2004ogsa}
+Thomas Sandholm, Peter Gardfj{\"a}ll, Erik Elmroth, Lennart Johnsson, and Olle
+  Mulmo.
+\newblock An ogsa-based accounting system for allocation enforcement across hpc
+  centers.
+\newblock In {\em Proceedings of the 2nd international conference on Service
+  oriented computing}, pages 279--288. ACM, 2004.
+
+\bibitem{shan2008characterizing}
+Hongzhang Shan, Katie Antypas, and John Shalf.
+\newblock Characterizing and predicting the i/o performance of hpc applications
+  using a parameterized synthetic benchmark.
+\newblock In {\em Proceedings of the 2008 ACM/IEEE conference on
+  Supercomputing}, page~42. IEEE Press, 2008.
+
+\bibitem{shan2007using}
+Hongzhang Shan and John Shalf.
+\newblock Using ior to analyze the i/o performance for hpc platforms.
+\newblock In {\em Cray Users Group Meeting (CUG)}, pages 7--10, 2007.
 
 \end{thebibliography}

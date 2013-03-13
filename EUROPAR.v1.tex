@@ -1,5 +1,13 @@
-\documentclass{llncs}
+%Section from Robin Gilbert's Thesis to get formatting correct.
+\documentclass[oneside,12pt]{memoir}
+\usepackage{mathptmx}  
+\DoubleSpacing         
+\usepackage{pwasu}  
+%End Robin's section   
+
 \bibliographystyle{plain}
+
+
 \newcommand{\tab}{\hspace*{2em}}
 \usepackage[english]{babel}
 \usepackage{amssymb,amsmath,graphicx,mdwlist,paralist,multirow,array,color}
@@ -9,20 +17,47 @@
 \renewcommand{\algorithmicforall}{\textbf{for each}}
 %\algrenewcommand{\algorithmiccomment}[1]{\hfill$\blacktriangleright$ #1}
 
+\DoubleSpacing
+
 \begin{document}
 
-\title{Time Division Multiplexing of Network Access by Security Groups in High Performance Computing Environments}
-\author{Joshua Ferguson}
-\date{\today}
-\maketitle
-\begin{abstract}
+\maxtocdepth{subparagraph} % put everything into the ToC
+\pagestyle{plain}  % pagestyle for the prelims
+\frontmatter
+\thetitlepage
+
+\setcounter{page}{1}
+\asuabstract 
 It is commonly known that High Performance Computing (HPC) systems are most frequently used by multiple users for batch job, parallel computations. Less well known, however, are the numerous HPC systems servicing such data so sensitive that administrators enforce either \begin{inparaenum}[\itshape a\upshape)] 
 \item sequential job processing - only one job at a time on the entire system, or
 \item physical separation - devoting an entire HPC system to a single project until recommissioned.
 \end{inparaenum}
 The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
-\end{abstract}
-\section{Introduction}
+
+\asuacknowledgements
+{I would like to acknowledge . . .}
+
+	\newpage
+\vspace*{\fill}
+\begingroup
+\hspace*{\fill}
+\centering{\textit{To my wife for her unwavering support}}
+\hspace*{\fill}
+\endgroup
+\vspace*{\fill}
+
+\tableofcontents
+
+\listoffigures
+
+\mainmatter
+\pagestyle{asu} 
+
+\addtocontents{toc}{
+ \protect\noindent CHAPTER \protect\par
+
+}
+\chapter{Introduction}
 High Performance Computing (HPC) systems are comprised of numerous individual computing systems networked and administrated together such that they can be used as a single system. Popular examples of these systems include some custom made such as the Cray I and the modern IBM Sequoia~\cite{leavitt2012big}, though more common are simple Computer Clusters in which Commercial Off The Shelf (COTS) equipment is utilized~\cite{buyya1999high}. Security within these systems is often enforced through traditional Operating System (OS) mechanisms of memory protection and file access privileges~\cite{buyya1999high}. 
 
 
@@ -31,8 +66,13 @@ Application developers for this domain of systems spans a broad spectrum, rangin
 
 
 This paper presents Time Division Multiplexing (TDM) of network access as a viable alternative to physical separation. By modulating network access between application security groups we can provide an intuitive security mechanism capable of being verified in real-time. Furthermore by implementing this mechanism at the operating system level it becomes transparent to user applications, meaning no modification to existing application code is necessary. 
-\section{Related Work}
-\section{Problem Definition}
+\chapter{Related Work}
+The problem statement and proposed solution represent the intersection of two somewhat disparate fields - Time Division Multiplexing and High Performance Computing Security. Related works are therefore divided between the two. 
+\subsection{High Performance Computing Security}
+The size and cost of HPC environments dictates that each system is somewhat unique. The security solutions implemented within each are similarly unique. Sandholm et al.~\cite{sandholm2004ogsa} make an attempt at rectifying this larger problem by creating a framework that uses automates user access permissions and resource allocation using "XACML (eXtensible Access Control Markup Language)". They further extend their solution by tying it in to existing job submission tools (Globus Toolkit~\cite{globus_toolkit} and NorduGrid~\cite{nordugrid}). 
+\subsection{Time Division Multiplexing}
+
+\chapter{Problem Definition}
 We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
 \subsection{Environmental Assumptions}
@@ -52,15 +92,13 @@ Compute nodes are independent computing devices designated to run user submitted
 
 It is assumed that these compute nodes do not co-locate user applications (e.g., two different user applications are running in the same system memory) and that user applications are not given administrative access at this level. No assumption is made about the use of virtual machines on compute nodes.
 
-\begin{wrapfigure}{r}{0.3\textwidth}
- \vspace{-25pt}
+\begin{figure}
   \begin{center}
     \includegraphics[width=0.28\textwidth]{inline_media_encryptor.jpg}
   \end{center}
   \caption{The $KG-200$ Inline Media Encryptor, certified by the NSA for use in securing persistent storage~\cite{nsa_ime_website}.}
 \label{fig:inline_media_encryptor}
-\vspace{-25pt}
-\end{wrapfigure}
+\end{figure}
 
 \subsubsection{Persistent Storage}
 Persistent storage devices are capable of storing large quantities of user application data, and are usually of much higher capacity than the compute nodes. User data is commonly co-located across disks using RAID (redundant array of inexpensive disks) technology ~\cite{katz1989disk} for higher storage efficiency and redundancy. 
@@ -79,16 +117,34 @@ Network infrastructure devices facilitate the transmission of data between nodes
 
 It is assumed that the network infrastructure uses Internet Protocol to communicate among nodes.
 
-\begin{wrapfigure}{l}{0.5\textwidth}
+\subsubsection{Job Execution}
+Best practices for developing jobs run on HPC systems dictates the minimization of I/O, both to disk and over the network ~\cite{shan2007using}. This I/O minimization is due to the dramatic increase in access time as data moves further away from the CPU and main memory. It's over 50 times more costly to access 1MB of data from the network than it is from main memory ~\cite{dean2009designs}. This overhead increases to almost a factor of 100 if that data is initially read from disk then sent over the network ~\cite{dean2009designs}.
+
+In the effort to minimize the cost of I/O transactions, previous researchers have shown that batching I/O into larger transactions can reduce overhead~\cite{shan2008characterizing}. The difference between sequentially reading 1K files from network disks and reading 256MB from network disks shows a factor of 1700 improved performance by reading in larger batches~\cite{shan2007using}. The batching of I/O, especially the most costly forms (disk and network) is therefore considered best practice when possible~\cite{borrill2007investigation}. It is therefore assumed that job developers will attempt to maximize I/O batching, the optimal case of which would have an I/O transaction history similar to that shown in Figure \ref{fig:application_model}.
+
+\begin{table}
+	\begin{center}
+	    \begin{tabular}{  l | r }
+	    Action & Time to Complete \\ \hline
+	    L1 cache reference & 0.5 ns  \\ 
+	    L2 cache reference & 7 ns  \\
+	    Main memory reference & 100 ns \\
+	    Read 1 MB sequentially from memory & 250,000 ns  \\  
+	    Read 1 MB sequentially from network & 10,000,000 ns \\ 
+		Read 1 MB sequentially from disk & 30,000,000 ns \\
+	    \end{tabular}
+	\end{center}
+	\caption{Access time examples showing the magnitude of difference between data over I/O and data locally stored~\cite{dean2009designs}.}
+\end{table}
+
+\begin{figure}
   \begin{center}
     \includegraphics[width=0.48\textwidth]{application_model.pdf}
   \end{center}
-  \caption{The assumed model of application execution in an HPC environment. $\alpha_{start}$ and $\alpha_{end}$ are periods where execution is I/O bound, and $\varepsilon$ is the prominent period where execution is CPU bound.}
-\label{fig:inline_media_encryptor}
-\end{wrapfigure}
+  \caption{The assumed model of application execution in an HPC environment. $\alpha_{start}$ and $\alpha_{end}$ are periods where execution is I/O bound, and $\varepsilon$ is the prominent period where execution is CPU bound. This structure adheres to research showing batched I/O minimizes the I/O cost in terms of time.}
+\label{fig:application_model}
+\end{figure}
 
-\subsubsection{Job Execution}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vestibulum molestie leo ac fermentum. Donec convallis vehicula suscipit. Vivamus orci nibh, porttitor non blandit at, euismod quis orci. Quisque quis ipsum ut felis imperdiet consequat. Donec quis est felis, id tempus orci. Aenean sodales, magna sit amet vehicula scelerisque, nulla diam condimentum felis, in luctus lectus leo eget nunc. Morbi a urna lectus. Maecenas eget mi eros. Duis purus est, mattis non dignissim in, imperdiet ac quam. Nulla placerat, elit eget imperdiet varius, nunc metus aliquam ipsum, ut tempus arcu sapien et dui. Cras enim metus, blandit scelerisque posuere vehicula, feugiat ac felis.
 \subsection{Security Challenge}
 
 \begin{table}
@@ -118,7 +174,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vestibulum mo
 \end{table}
 
 The security fear of customers with sensitive data is that a different customer could, through chance or intention, acquire or manipulate their data. There exist three main mediums across which data may be exposed. 
-\section{Design Goals}
+\chapter{Design Goals}
 Here we describe the major goals in the design and implementation of the TDM security mechanism.
 \subsection{Mechanism and Policy Separation}
 Envisioning the tool as enabling a more secure form of HPCaaS, the type, number, and scale of jobs assigned to any of the systems can be widely varied. To handle this, at the least, the tool must be capable of receiving and modifying policy at the start of each new job. Furthermore, to provide more fine-grained control an online policy modification scheme is desirable for managing performance tradeoffs between security groups. We define the mechanism and policy split of our tool to be an ability to receive and actuate policy changes at the finest granularity in which the tool operates. [Mechanism Policy split is really along the difference between the formal notion that nodes must be transparently separated from the medium and how it is accomplished (with a queue, at the TCP layer, on ethernet, etc.)]
@@ -126,9 +182,9 @@ Envisioning the tool as enabling a more secure form of HPCaaS, the type, number,
 Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this tool to be network fabric agnostic if the tool is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
 \subsection{User Application Transparent}
 A fundamental requirement of the tool is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our tool, given that it can also do so on a system not using our tool. 
-\section{Formal Definition}
+\chapter{Formal Definition}
 
-Suppose \emph{S} is a finite set of security groups, s.t. each security group $s\in S$ is made up of a number of compute nodes. Given \emph{S}, the language our mechanism operates on can be generated by a context free grammar. Because the language is dependent on the security groups \emph{S}, this grammar must be generated based on it. This is done in two steps:
+Suppose \emph{S} is a finite set of security groups, s.t. each security group $s\in S$ is made up of a number of compute nodes. Given \emph{S}, the language our mechanism operates on can be generated by the following grammar. Because the language is dependent on the security groups \emph{S}, this grammar must be generated based on it. This is done in two steps:
 
 First, we define the base grammar:\\
 
@@ -184,7 +240,7 @@ Finally, the language our mechanism accepts for security group \emph{S} can be f
 \tab $\Sigma = \Sigma ^1\cup \Sigma ^2$
 
 \tab $R = R^1\cup R^2$
-\section{Implementation}
+\chapter{Implementation}
 As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from the previous section.
 \subsection{Overview}
 \begin{algorithm}
@@ -295,42 +351,82 @@ Determine system network access states for the next time window
 Validate the closure of the previous time window
 Communicate the next time window states to compute nodes
 To determine the network access states for the next time window the scheduler must run a scheduling algorithm on a few historical inputs. The base case scheduling algorithm is round robin (i.e., equal window size for each security group). To improve performance, a number of heuristics have been considered for the creation of a dynamic priority scheduling algorithm: the egress controller memory usage of compute nodes, number of TCP timeouts, and externally imposed priorities. 
-\section{Case Study}
+\chapter{Performance}
+
+\begin{figure}
+\centerline{\includegraphics[scale=0.8]{TCP_Performance.pdf}}
+\caption{TDM effect on TCP application performance.}
+\label{fig:TCP_Performance}
+\end{figure}
+
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{node_state_diagram.pdf}
 \caption{State diagram of a compute node.}
 \label{fig:node_state_diagram}
 \end{figure}
+
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{control_state_diagram.pdf}
 \caption{State diagram of an example window controller.}
 \label{fig:control_state_diagram}
 \end{figure}
+\subsection{Expected Values}
 
-\subsection{Performance}
+\begin{table}
+	\begin{center}
+	    \begin{tabular}{  l | r  }
+	    Technical Specifications & \\ \hline
+	    CPUs & 16 cores @ 2.2GHz \\
+	    Main Memory & 32GB @ DDR3\\
+	    \end{tabular}
+	\end{center}
+	\caption{Technical specifications of compute nodes within the Titan at ORNL.}
+	\label{tab:titan_ORNL}
+\end{table}
+
+Leading systems in high performance computing can serve as indicators of where commercial HPC systems will be in the upcoming years. The Titan system at Oak Ridge National Laboratories (ORNL) is one such system, the technical details of which are displayed in Table~\ref{tab:titan_ORNL}.
+
 Here we attempt to quantify how the mechanism affects memory usage at the compute node level and effective bandwidth.
 \begin{description}
     \item[$T_{on, n}$] Time, within a window, where compute node $n$ has access to the network.
     \item[$T_{window}$] Length in time of a single window.
     \item[$\Pi_{app, n}$] Speed at which the application on compute node $n$ generates network traffic.
     \item[$\Pi_{NIC, n}$] Speed at which the NIC on compute node $n$ can transmit traffic onto the network.
-    
-    
 \end{description} 
-\begin{wrapfigure}{r}{0.5\textwidth}
- \vspace{-25pt}
+
+\subsection{Case Study}
+To verify and test the mechanism a test bed was created out of five Dell $1955$ servers seen in Figure~\ref{fig:test_bed}. These servers run Ubuntu server version 12.04 and had their network interfaces configured and connected according to Figure~\ref{fig:tdm_demo_setup}. 
+
+To simulate job execution each node ran a program that sent ICMP (ping) commands at stochastic intervals and speeds to the other member other member of the security group. The mechanism, started and controlled at the control server (see Figure~\ref{fig:test_bed}) alternated between network access for each security group at a time interval of one second of network access per group. A Wireshark (REF PACKET SNIFFING) trace was ran at the control server and the results of which can be seen in Figure~\ref{fig:wireshark} showing a history of packets sent through the network. The black entries represent communications originating from the control server, while the red and blue entries represent packets originating from nodes within the security group. MAKE IMAGE OF RANDOMIZED PINGING AND COMPARE THE BEFORE AFTER - MENTION THIS IS EGRESS INFORMATION, FIND WAY TO SHOW INGRESS.
+\begin{figure}
   \begin{center}
-    \includegraphics[width=0.48\textwidth]{wireshark.jpg}
+    \includegraphics[width=0.9\textwidth]{tdm_demo_setup.pdf}
+  \end{center}
+  \caption{The network architecture of our demonstration test bed.}
+\label{fig:tdm_demo_setup}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{test_bed.jpg}
+  \end{center}
+  \caption{The TDM test bed located in Impact Lab at Arizona State University.}
+\label{fig:test_bed}
+\end{figure}
+    
+    
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{wireshark.jpg}
   \end{center}
   \caption{An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - red and blue.}
 \label{fig:wireshark}
-\vspace{-25pt}
-\end{wrapfigure}
+\end{figure}
 
 \subsection{Security Validation}
-\section{Conclusion}
+\chapter{Conclusion}
 \subsection{Further Work}
 Implement dynamic scheduling algorithm on the window scheduler using memory usage statistics from compute nodes. 
 
