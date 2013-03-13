@@ -176,7 +176,7 @@ In the effort to minimize the cost of I/O transactions, previous researchers hav
 \end{adjustwidth}
 \end{table}
 
-The security fear of customers with sensitive data is that a different customer could, through chance or intention, acquire or manipulate their data. The three main components assumed within an HPC system described above represent the resources across which data may be exposed. Table~\ref{tab:security_challenges} shows the standard ways in which these resources are secured.
+The security fear of customers with sensitive data is that a different customer could, through chance or intention, acquire or manipulate their data. The three main components assumed within an HPC system described above represent the resources across which data may be exposed. Table~\ref{tab:security_challenges} shows the standard ways in which these resources are secured. [REMOVE: WRITE ON HOW CURRENT METHODS OF SECURING NETWORK ARE NOT ENOUGH]
 \chapter{Design Goals}
 Here we describe the major goals in the design and implementation of the TDMA security mechanism.
 \subsection{Mechanism and Policy Separation}
@@ -403,7 +403,7 @@ Here we attempt to quantify how the mechanism affects memory usage at the comput
 \subsection{Case Study}
 To verify and test the mechanism a test bed was created out of five Dell $1955$ servers seen in Figure~\ref{fig:test_bed}. These servers run Ubuntu server version 12.04 and had their network interfaces configured and connected according to Figure~\ref{fig:tdm_demo_setup}. 
 
-To simulate job execution each node ran a program that sent ICMP (ping) commands at stochastic intervals and speeds to the other member other member of the security group. The mechanism, started and controlled at the control server (see Figure~\ref{fig:test_bed}) alternated between network access for each security group at a time interval of one second of network access per group. A Wireshark trace was ran at the control server and the results of which can be seen in Figure~\ref{fig:wireshark} showing a history of packets sent through the network. The black entries represent communications originating from the control server, while the red and blue entries represent packets originating from nodes within the security group. 
+To simulate job execution each node ran a program that sent ICMP (ping) commands at stochastic intervals and speeds to the other member other member of the security group. The mechanism, started and controlled at the control server (see Figure~\ref{fig:test_bed}) alternated between network access for each security group at a time interval of one second of network access per group. A Wireshark (REF PACKET SNIFFING) trace was ran at the control server and the results of which can be seen in Figure~\ref{fig:wireshark} showing a history of packets sent through the network. The black entries represent communications originating from the control server, while the red and blue entries represent packets originating from nodes within the security group. [REMOVE MAKE IMAGE OF RANDOMIZED PINGING AND COMPARE THE BEFORE AFTER - MENTION THIS IS EGRESS INFORMATION, FIND WAY TO SHOW INGRESS.]
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{tdm_demo_setup.pdf}
@@ -429,8 +429,11 @@ To simulate job execution each node ran a program that sent ICMP (ping) commands
 \label{fig:wireshark}
 \end{figure}
 
+\subsection{Security Validation}
 \chapter{Conclusion}
 The problem of enforcing authenticated access to resources in an HPC environment is a difficult one. Further, creating a solution that is intuitive and secure enough to convince highly sceptical stakeholders of its security narrows available options. This thesis presents a method of solving this problem that is both intuitive and verifiably secure, in real time. The worst case performance penalty of utilizing this mechanism is shown to be within bounds of reasonable expectations. Practical performance is expected to minimize the overhead of the mechanism. 
+\subsection{Further Work}
+Implement dynamic scheduling algorithm on the window scheduler using memory usage statistics from compute nodes. 
 
 \bibliographystyle{plain}
 \bibliography{bibliography}

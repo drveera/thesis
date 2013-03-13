@@ -5,7 +5,7 @@
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}
 \contentsline {chapter}{\chapternumberline {2}Related Work}{3}
 \contentsline {subsection}{High Performance Computing Security}{3}
-\contentsline {subsection}{Time Division Multiplexing}{4}
+\contentsline {subsection}{Time Division Multiple Access}{4}
 \contentsline {chapter}{\chapternumberline {3}Problem Definition}{5}
 \contentsline {subsection}{Environmental Assumptions}{5}
 \contentsline {subsubsection}{Compute Nodes}{5}
@@ -28,7 +28,5 @@
 \contentsline {chapter}{\chapternumberline {7}Performance}{19}
 \contentsline {subsection}{Expected Values}{19}
 \contentsline {subsection}{Case Study}{19}
-\contentsline {subsection}{Security Validation}{21}
 \contentsline {chapter}{\chapternumberline {8}Conclusion}{25}
-\contentsline {subsection}{Further Work}{25}
 \contentsline {chapter}{Bibliography}{26}
