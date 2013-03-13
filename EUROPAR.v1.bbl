@@ -7,6 +7,14 @@ United States National~Security Administration.
   \url{http://www.nsa.gov/ia/programs/inline_media_encryptor/index.shtml},
   January 2009.
 
+\bibitem{allcock2001secure}
+Bill Allcock, Joe Bester, John Bresnahan, Ann~L Chervenak, Carl Kesselman, Sam
+  Meder, Veronika Nefedova, Darcy Quesnel, Steven Tuecke, and Ian Foster.
+\newblock Secure, efficient data transport and replica management for
+  high-performance data-intensive computing.
+\newblock In {\em Mass Storage Systems and Technologies, 2001. MSS'01.
+  Eighteenth IEEE Symposium on}, pages 13--13. IEEE, 2001.
+
 \bibitem{arackal2009access}
 V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
   R.~Sridharan, and S.~Chattopadhyay.
@@ -35,6 +43,14 @@ R.~Buyya.
   volume~1.
 \newblock Prentice Hall, Upper SaddleRiver, NJ, USA, 1999.
 
+\bibitem{chervenak2000data}
+Ann Chervenak, Ian Foster, Carl Kesselman, Charles Salisbury, and Steven
+  Tuecke.
+\newblock The data grid: Towards an architecture for the distributed management
+  and analysis of large scientific datasets.
+\newblock {\em Journal of network and computer applications}, 23(3):187--200,
+  2000.
+
 \bibitem{nsa_ime}
 G.N. Cohen, B.~Kamenel, and C.M. Kubic.
 \newblock Security for integrated ip-atm/tactical-strategic networks.
@@ -46,6 +62,11 @@ J.~Dean.
 \newblock Designs, lessons and advice from building large distributed systems.
 \newblock Presented at Large-Scale Distributed Systems and Middleware (LADIS),
   2009.
+
+\bibitem{horowitz1997ftp}
+Marc Horowitz and Steve Lunt.
+\newblock Ftp security extensions.
+\newblock Technical report, RFC 2228, October, 1997.
 
 \bibitem{jackson2006demand}
 D.B. Jackson.

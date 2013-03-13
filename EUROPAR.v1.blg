@@ -1,51 +1,51 @@
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: EUROPAR.v1.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 86 of file EUROPAR.v1.aux
+Illegal, another \bibstyle command---line 93 of file EUROPAR.v1.aux
  : \bibstyle
  :          {plain}
 I'm skipping whatever remains of this command
 Database file #1: bibliography.bib
 Warning--empty booktitle in dean2009designs
-You've used 17 entries,
+You've used 20 entries,
             2118 wiz_defined-function locations,
-            598 strings with 7152 characters,
-and the built_in function-call counts, 6283 in all, are:
-= -- 619
-> -- 284
-< -- 10
-+ -- 115
-- -- 96
-* -- 400
-:= -- 992
-add.period$ -- 57
-call.type$ -- 17
-change.case$ -- 98
+            616 strings with 7914 characters,
+and the built_in function-call counts, 7618 in all, are:
+= -- 747
+> -- 378
+< -- 11
++ -- 153
+- -- 130
+* -- 506
+:= -- 1220
+add.period$ -- 67
+call.type$ -- 20
+change.case$ -- 125
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 252
-empty$ -- 520
-format.name$ -- 96
-if$ -- 1377
+cite$ -- 21
+duplicate$ -- 292
+empty$ -- 600
+format.name$ -- 130
+if$ -- 1647
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 14
-newline$ -- 88
-num.names$ -- 34
-pop$ -- 140
+int.to.str$ -- 20
+missing$ -- 16
+newline$ -- 103
+num.names$ -- 40
+pop$ -- 166
 preamble$ -- 1
-purify$ -- 82
+purify$ -- 105
 quote$ -- 0
-skip$ -- 186
+skip$ -- 214
 stack$ -- 0
-substring$ -- 341
-swap$ -- 81
-text.length$ -- 10
+substring$ -- 406
+swap$ -- 91
+text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 78
 warning$ -- 1
-while$ -- 60
-width$ -- 19
-write$ -- 192
+while$ -- 71
+width$ -- 22
+write$ -- 226
 (There was 1 error message)

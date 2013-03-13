@@ -35,13 +35,14 @@ It is commonly known that High Performance Computing (HPC) systems are most freq
 The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 
 \asuacknowledgements
-{I would like to acknowledge . . .}
+{I would like to acknowledge and thank Dr. Gupta for taking a chance and inviting me to work in Impact Lab, Dr. Varsamopoulos for his immense technical guidance (especially regarding Linux), and Dr. Ball for his earnest support of this thesis and its goals. I am intellectually and personally indebted to the members of Impact Lab for their help with the myriad of tasks that arose during my time with the lab. Special mention must go to Dr. Tridib Mukherjee, Dr. Ayan Bannerjee, and (soon to be Dr.) Zahra Abbasi for helping me with their seemingly boundless knowledge of the research we did, as well as Robin Gilbert for being a true friend and great colleague. I thank Raytheon for their capital support of our research. Finally, I thank my parents and brother for their love and support.
+}
 
 	\newpage
 \vspace*{\fill}
 \begingroup
 \hspace*{\fill}
-\centering{\textit{To my wife for her unwavering support}}
+\centering{\textit{To my wife, Sara, for her unwavering support}}
 \hspace*{\fill}
 \endgroup
 \vspace*{\fill}
@@ -70,6 +71,8 @@ This paper presents Time Division Multiplexing (TDM) of network access as a viab
 The problem statement and proposed solution represent the intersection of two somewhat disparate fields - Time Division Multiplexing and High Performance Computing Security. Related works are therefore divided between the two. 
 \subsection{High Performance Computing Security}
 The size and cost of HPC environments dictates that each system is somewhat unique. The security solutions implemented within each are similarly unique. Sandholm et al.~\cite{sandholm2004ogsa} make an attempt at rectifying this larger problem by creating a framework that uses automates user access permissions and resource allocation using "XACML (eXtensible Access Control Markup Language)". They further extend their solution by tying it in to existing job submission tools (Globus Toolkit~\cite{globus_toolkit} and NorduGrid~\cite{nordugrid}). 
+
+Allcock et al.~\cite{allcock2001secure} developed a high-speed data transport protocol, GridFTP, as well as a corresponding administrative service providing for the creation, registration, and secure transportation of scientific computing datasets. For efficient execution, HPC applications must carefully consider characteristics of the data set under operation such as file size statistics, data creation/consumption rates, and logical distribution~\cite{chervenak2000data}. GridFTP implements management of these characteristics while maintaining customizable security using the authentication mechanisms defined in RFC 2228 "FTP Security Extensions"~\cite{horowitz1997ftp}. This solution, while useful in most scientific computing setting, still allows for application data, albeit encrypted, to be visible over the network to other user applications. This visibility renders it insufficient for the requirements of customers with the most stringent data security needs.
 \subsection{Time Division Multiplexing}
 
 \chapter{Problem Definition}
@@ -354,21 +357,21 @@ To determine the network access states for the next time window the scheduler mu
 \chapter{Performance}
 
 \begin{figure}
-\centerline{\includegraphics[scale=0.8]{TCP_Performance.pdf}}
+\centerline{\includegraphics{TCP_Performance.pdf}}
 \caption{TDM effect on TCP application performance.}
 \label{fig:TCP_Performance}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{node_state_diagram.pdf}
+\includegraphics[scale=0.7]{node_state_diagram.pdf}
 \caption{State diagram of a compute node.}
 \label{fig:node_state_diagram}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{control_state_diagram.pdf}
+\includegraphics[scale=0.62]{control_state_diagram.pdf}
 \caption{State diagram of an example window controller.}
 \label{fig:control_state_diagram}
 \end{figure}
