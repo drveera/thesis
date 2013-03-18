@@ -365,9 +365,16 @@ To determine the network access states for the next time window the scheduler mu
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.75]{Switching.pdf}
+\includegraphics[scale=0.8]{Switching.pdf}
 \caption{A trace of network traffic under performance testing while TDMA controls access.}
 \label{fig:Switching}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.75]{detailed_performance.pdf}
+\caption{The impact of TDMA on TCP performance under two different 'netperf' tests.}
+\label{fig:detailed_performance}
 \end{figure}
 
 \begin{figure}
@@ -396,7 +403,7 @@ To determine the network access states for the next time window the scheduler mu
 	\caption{Technical specifications of compute nodes within the Titan at ORNL.}
 	\label{tab:titan_ORNL}
 \end{table}
-
+MAKE SURE TO CITE NETPERF~\cite{netperf}
 Leading systems in high performance computing can serve as indicators of where commercial HPC systems will be in the upcoming years. The Titan system at Oak Ridge National Laboratories (ORNL) is one such system, the technical details of which are displayed in Table~\ref{tab:titan_ORNL}.
 
 Here we attempt to quantify how the mechanism affects memory usage at the compute node level and effective bandwidth.
@@ -432,8 +439,16 @@ To simulate job execution each node ran a program that sent ICMP (ping) commands
   \begin{center}
     \includegraphics[width=0.9\textwidth]{wireshark.jpg}
   \end{center}
-  \caption{An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - red and blue.}
+  \caption{An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - denoted as red and blue.}
 \label{fig:wireshark}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{wireshark_random.jpg}
+  \end{center}
+  \caption{An example trace of applications operating without TDMA.Note the interweaving of traffic from the different security groups - denoted as red and blue.}
+\label{fig:wireshark_random}
 \end{figure}
 
 \subsection{Security Validation}

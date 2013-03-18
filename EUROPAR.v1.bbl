@@ -73,6 +73,12 @@ D.B. Jackson.
 \newblock On-demand access to compute resources, April~7 2006.
 \newblock US Patent App. 11/279,007.
 
+\bibitem{netperf}
+Rick Jones, Karen Choy, and David et~al. Shield.
+\newblock netperf - a network performance benchmark.
+\newblock \url{http://www.netperf.org/netperf/}.
+\newblock Version 2.5.0.
+
 \bibitem{katz1989disk}
 R.H. Katz, G.A. Gibson, and D.A. Patterson.
 \newblock Disk system architectures for high performance computing.
