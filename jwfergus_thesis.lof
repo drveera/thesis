@@ -1,0 +1,19 @@
+\select@language {english}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces A beowulf cluster.~\cite {beowulf}\relax }}{1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces The Cray I.~\cite {crayi}\relax }}{1}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces IBM's Blue Gene.~\cite {blue_gene}\relax }}{1}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces The spectrum of environmental security requirements based on uses and stakeholders.\relax }}{2}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Unmodified computing nodes.\relax }}{3}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces TDMA overlaid onto Figure~\ref {fig:simple_TDMA_introduction_pt1}\relax }}{3}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces An abstract HPC environment.\relax }}{6}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces The $KG-200$ Inline Media Encryptor, certified by the NSA for use in securing persistent storage~\cite {nsa_ime_website}.\relax }}{7}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces The assumed model of application execution in an HPC environment. $\alpha _{start}$ and $\alpha _{end}$ are periods where execution is I/O bound, and $\varepsilon $ is the prominent period where execution is CPU bound. This structure adheres to research showing batched I/O minimizes the I/O cost in terms of time.\relax }}{9}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces TDMA effect on TCP application performance and demonstration of payload size effect on network throughput.\relax }}{21}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces A trace of network traffic under performance testing while TDMA controls access.\relax }}{22}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{22}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces State diagram of a compute node.\relax }}{23}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces State diagram of an example window controller.\relax }}{23}
+\contentsline {figure}{\numberline {7.6}{\ignorespaces The network architecture of our demonstration test bed.\relax }}{24}
+\contentsline {figure}{\numberline {7.7}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{25}
+\contentsline {figure}{\numberline {7.8}{\ignorespaces An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - denoted as red and blue.\relax }}{26}
+\contentsline {figure}{\numberline {7.9}{\ignorespaces An example trace of applications operating without TDMA.Note the interweaving of traffic from the different security groups - denoted as red and blue.\relax }}{27}

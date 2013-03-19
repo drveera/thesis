@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: jwfergus_thesis.aux
+The style file: plain.bst
+Illegal, another \bibstyle command---line 125 of file jwfergus_thesis.aux
+ : \bibstyle
+ :          {plain}
+I'm skipping whatever remains of this command
+Database file #1: bibliography.bib
+Warning--empty booktitle in dean2009designs
+You've used 28 entries,
+            2118 wiz_defined-function locations,
+            650 strings with 9161 characters,
+and the built_in function-call counts, 9374 in all, are:
+= -- 909
+> -- 451
+< -- 11
++ -- 184
+- -- 152
+* -- 578
+:= -- 1516
+add.period$ -- 90
+call.type$ -- 28
+change.case$ -- 160
+chr.to.int$ -- 0
+cite$ -- 29
+duplicate$ -- 351
+empty$ -- 771
+format.name$ -- 152
+if$ -- 2023
+int.to.chr$ -- 0
+int.to.str$ -- 28
+missing$ -- 17
+newline$ -- 142
+num.names$ -- 56
+pop$ -- 234
+preamble$ -- 1
+purify$ -- 132
+quote$ -- 0
+skip$ -- 271
+stack$ -- 0
+substring$ -- 447
+swap$ -- 99
+text.length$ -- 11
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 110
+warning$ -- 1
+while$ -- 87
+width$ -- 30
+write$ -- 303
+(There was 1 error message)
