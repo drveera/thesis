@@ -87,7 +87,7 @@ High Performance Computing (HPC) systems consist of numerous individual computin
 \label{fig:security_spectrum}
 \end{figure}
 \subsection{Security Concerns}
-Application developers for these systems span a broad spectrum, ranging from undergraduate students learning concurrent programming to defence contractors executing classified simulations. Key characteristics of this spectrum are shown in Figure~\ref{fig:security_spectrum}. Moving towards the most demanding end of the spectrum, security concerns among application-side stakeholders increase substantially and additional methods are employed to enforce information security. At some point along this spectrum stakeholders demand physical separation of the system from other users during operation to satisfy security concerns. The reasons behind this can be numerous, but stem from two major goals: simplicity of implementation and verification; and risk aversion/management. In the defence industry particularly, information security breaches can threaten the existence of entire programs due to certification revocation from agencies such as the Department of Defense (DoD)~\cite{classified_manual}, the DoD's Defense Security Service (DSS) agency~\cite{updatedclearing}, and the National Institute of Standards and Technology (NIST). Such risk reasonably implies physical separation of systems under operation from other users as well as numerous other physical security requirements. 
+Application developers for these systems span a broad spectrum, ranging from undergraduate students learning concurrent programming to defense contractors executing classified simulations. Key characteristics of this spectrum are shown in Figure~\ref{fig:security_spectrum}. Moving towards the most demanding end of the spectrum, security concerns among application-side stakeholders increase substantially and additional methods are employed to enforce information security. At some point along this spectrum stakeholders demand physical separation of the system from other users during operation to satisfy security concerns. The reasons behind this can be numerous, but stem from two major goals: simplicity of implementation and verification; and risk aversion/management. In the defense industry particularly, information security breaches can threaten the existence of entire programs due to certification revocation from agencies such as the Department of Defense (DoD)~\cite{classified_manual}, the DoD's Defense Security Service (DSS) agency~\cite{updatedclearing}, and the National Institute of Standards and Technology (NIST). Such risk reasonably implies physical separation of systems under operation from other users as well as numerous other physical security requirements. 
 
 It is undeniable that physical separation provides a level of information security that is difficult to replicate through the use of software, however the financial costs are significant - devoting entire HPC systems to a single project, or running jobs sequentially with downtime for data cleansing between~\cite{updatedclearing}. 
 
@@ -111,7 +111,7 @@ The scheme works by inserting gates to network access at each computing node (co
 \end{minipage}
 \end{figure}
 
-Chapter~\ref{chap:implementation} provides details on the implementation of this scheme, and Chapter~\ref{chap:formal_definition} formally defines the scheme's operations.
+Chapter~\ref{chap:implementation} provides details on the implementation of this scheme, and Section~\ref{sec:formal_definition} formally defines the scheme's operations.
 \chapter{Related Work}
 The problem statement and proposed solution represent the intersection of two somewhat disparate fields - Time Division Multiple Access and High Performance Computing Security. Related works are therefore divided between the two. 
 \subsection{High Performance Computing Security}
@@ -122,6 +122,7 @@ Allcock et al.~\cite{allcock2001secure} developed a high-speed data transport pr
 Mages and Feng~\cite{mages1999method} patented a similar control scheme of computing resources via a centralized controller over the network. Their scheme, however, specifies only local media resources of the node as under the control of the central administrative node. Furthermore, their patent is intended for a much wider distributed use as digital rights management and security in consumer media devices, rather than our work on security in HPC environments.
 
 \chapter{Problem Definition}
+\label{chap:problem_definition}
 We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
 \subsection{Assumptions on the Computing Environment}
@@ -224,19 +225,39 @@ In the effort to minimize the cost of I/O transactions, previous researchers hav
 
 The security fear of users with extremely sensitive data is that a different user could, through chance or intention, acquire or manipulate their data. The four basic resources described above represent the resources across which data may be exposed. Table~\ref{tab:security_challenges} organizes the aforementioned ways in which these resources are secured~\cite{buyya1999high}. 
 
-[REMOVE: WRITE ON HOW CURRENT METHODS OF SECURING NETWORK ARE NOT ENOUGH]
+So far we have described ways in which three of the four shared resources are secured by technology that is either certified by national defense agencies (as in the case of persistent storage) or intuitive and easily verifiable (as in the case of compute node board separation and administrative POSIX permissions). This leaves the shared networking resources as a point of data sharing. 
+
+\subsection{Insufficient Solutions}
+\label{sec:insufficient_solutions}
+There exist current solutions for the strict problem of preventing plaintext data sharing, but these solutions lack certain qualities that make them sufficient for the narrow solution we're seeking when trying to assure users assuming significant risk. These existing solutions fail through their lack of thoroughness, lack of intuitiveness, inability to be simply verified, and even through established security flaws. 
+\subsubsection{Encryption}
+Socket to socket encryption is a common solution to preventing data theft over a network, though somewhat out of place in an HPC environment due to their overhead. This solution falls short in its inability to prevent data sharing. Though the data is encrypted, the value of the plaintext (unencrypted data) is commonly so high that copying, storing and later decrypting the network traffic a risk to be prevented.
+\subsubsection{Virtual Local Area Networks (VLANs)}
+VLANs, standardized in IEEE 802.1Q~\cite{ieee_vlan}, are a common solution to preventing data sharing specifically within large computing infrastructures such as data centers and mainframes, though sometimes used in HPC environments. VLANs work by tagging traffic on network switches and routers according to configurable tables of LAN membership matched with physical interface, with the intention of mimicking the configurability and security of LANs. Within the VLAN specification there lie two inherent flaw with VLANs to verifiability that meets our envisioned users' needs, as well as a few unresolved security flaws. 
+
+VLAN solutions are difficult to verify in two ways:
+\begin{inparaenum}[\itshape a\upshape)] 
+\item the logic of VLAN technology is hidden within firmware which is expensive to analyze. As VLAN technology improves and becomes more complicated, this problem will only increase in future versions of the systems~\cite{emery2011security}\cite{kloth2001derived}.
+\item VLAN hardware is commonly manufactured by international firms that may have pressure from outside governments to include secret backdoors in the firmware, further exacerbating the previous verification difficulty. Examples of this uncertainty can be seen in a special report by the U.S. House of Representatives from October 8th, 2012~\cite{huawei}.
+\end{inparaenum}
+
+Furthermore, due to backwards compatibility standards outlined in IEEE 802.1Q, the tagging mechanism of VLANs can be abused via a ''double-encapsulated 802.1Q / Nested VLAN" attack which works by placing two VLAN tags on a packet. By doing so, during certain situations it is possible for packets to ''escape" their VLAN designation and convey messages to hosts outside their configured VLAN~\cite{cisco_vlan_whitepaper}.
 
 \chapter{Design Goals}
-Here we describe the major goals in the design and implementation of the TDMA security mechanism.
-\subsection{Mechanism and Policy Separation}
-Envisioning the tool as enabling a more secure form of HPC for mutually distrusting users, the type, number, and scale of jobs assigned to any of the systems can be widely varied. To handle this, at the least, the tool must be capable of receiving and modifying policy at the start of each new job. Furthermore, to provide more fine-grained control an online policy modification scheme is desirable for managing performance tradeoffs between security groups. We define the mechanism and policy split of our tool to be an ability to receive and actuate policy changes at the finest granularity in which the tool operates.
+Chapter~\ref{chap:problem_definition}'s discussion on security flaws within HPC environments shows that there exists an untouched niche for a software solution that replicates the security of physical user separation. Here we describe the requirements and goals in designing our solution to this problem.
+\subsection{A More Thorough and Intuitive Network Security}
+The gap between the security mechanisms discussed in Section~\ref{sec:insufficient_solutions} and the current approach of physical user separation is large. From manufacturing and political policy problems~\cite{huawei} to simple security flaws~\cite{cisco_vlan_whitepaper}, current solutions are insufficient. For users in this domain to accept a software approach to network security in HPC environments, the proposed solution must be thorough, simple, intuitive and easily verifiable. The thoroughness of physical user separation is inherent in that it operates at the very lowest level of network operations, the physical layer. The closer our mechanism approaches this layer, the more thorough it will be considered.
+\subsection{Dynamic Control}
+Within HPC environments the type, number, and scale of jobs assigned to any of the systems can be widely varied. To handle this, the solution must be capable of receiving and modifying policy at the start of each new job. Furthermore, to manage performance tradeoffs a fine-grained control of the mechanism at higher resolution than job submission rate is desired. 
 \subsection{Network Fabric Agnostic}
-Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this tool to be network fabric agnostic if the tool is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
+Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this solution to be network fabric agnostic if it is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
 \subsection{User Application Transparent}
-A fundamental requirement of the tool is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our tool, given that it can also do so on a system not using our tool. 
-\chapter{Formal Definition}
-\label{chap:formal_definition}
-Before discussing how our mechanism is implemented, we must first define the abstract definition that describes how the mechanism works beyond any specific implementation. The best way to describe this mechanism is through a language that represents the mechanism in operation. This language is defined formally by stating the grammar that generates it.
+A fundamental requirement of the solution is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our solution, given that it can also do so on a system not using our solution. 
+\chapter{Time Division Multiple Access of Shared Network Resources}
+
+\subsection{Formal Definition}
+\label{sec:formal_definition}
+Before discussing our implementation of the solution, we first define an abstract definition that describes how the mechanism works beyond any specific implementation. The best way to describe this mechanism is through a language that represents the mechanism in operation. This language is defined formally by stating the grammar that generates it.
 
 Suppose \emph{S} is a finite set of security groups, s.t. each security group $s\in S$ is made up of a number of compute nodes. Given \emph{S}, the language our mechanism operates on can be generated by the following grammar. Because the language is dependent on the security groups \emph{S}, this grammar must be generated based on it. This is done in two steps:
 
@@ -381,7 +402,18 @@ The state controller has three major tasks:
 \item Collect and store performance data on the egress queue's memory usage
 \end{enumerate}
 
- 
+\begin{figure}
+\centering
+\includegraphics[scale=0.55]{netfilter_chain.pdf}
+\caption{Data flow architecture of \textit{iptables}, the packet filtering firewall with \textit{NetFilter} located within the Linux kernel. The input and output ''chains" within \textit{NetFilter} provide an interface for administrators to control and filter packets sent into user space.}
+\label{fig:netfilter_chain}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.57]{netfilter_in_out_chains.pdf}
+\caption{A detailed look at the logic within the \textit{NetFilter} chains that makeup the Ingress and Egress controllers on compute nodes.}
+\label{fig:netfilter_in_out_chains}
+\end{figure}
 
 \subsection{Ingress Controller}
 The ingress controller is a firewall of incoming network packets and has two states:

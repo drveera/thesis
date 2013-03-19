@@ -68,6 +68,12 @@ J.~Dean.
 \newblock Presented at Large-Scale Distributed Systems and Middleware (LADIS),
   2009.
 
+\bibitem{emery2011security}
+Jean-Yvesc Emery, C{\'e}dricc Vandenweghe, Brunoc Thery, et~al.
+\newblock Security management process of at least one vlan of an ethernet
+  network, April~13 2011.
+\newblock EP Patent 2,073,455.
+
 \bibitem{horowitz1997ftp}
 Marc Horowitz and Steve Lunt.
 \newblock Ftp security extensions.
@@ -94,6 +100,11 @@ A.~Keller and A.~Reinefeld.
 \newblock Anatomy of a resource management system for hpc clusters.
 \newblock {\em Annual Review of Scalable Computing}, 3(1):1--31, 2001.
 
+\bibitem{kloth2001derived}
+Raymond Kloth.
+\newblock Derived vlan mapping technique, March~27 2001.
+\newblock US Patent 6,208,649.
+
 \bibitem{blue_gene}
 Argonne~National Laboratory.
 \newblock The ibm blue gene/p supercomputer installation at the argonne
@@ -106,6 +117,10 @@ Argonne~National Laboratory.
 N.~Leavitt.
 \newblock Big iron moves toward exascale computing.
 \newblock {\em Computer}, 45(11):14--17, 2012.
+
+\bibitem{ieee_vlan}
+IEEE Local, Metropolitan Area Network~Standards Committee, et~al.
+\newblock Virtual bridged local area networks, 1998.
 
 \bibitem{madai2010performance}
 B.~Madai and R.~Al-Shaikh.
@@ -146,6 +161,11 @@ Clemens Pfeiffer.
 \newblock \url{http://en.wikipedia.org/wiki/File:Cray-1-deutsches-museum.jpg},
   November 2006.
 
+\bibitem{huawei}
+Mike Rogers and Dutch Ruppersberger.
+\newblock Investigative report on the u.s. national security issues posed by
+  chinese telecommunications companies huawei and zte, October 2012.
+
 \bibitem{sandholm2004ogsa}
 Thomas Sandholm, Peter Gardfj{\"a}ll, Erik Elmroth, Lennart Johnsson, and Olle
   Mulmo.
@@ -170,5 +190,12 @@ Hongzhang Shan, Katie Antypas, and John Shalf.
 Hongzhang Shan and John Shalf.
 \newblock Using ior to analyze the i/o performance for hpc platforms.
 \newblock In {\em Cray Users Group Meeting (CUG)}, pages 7--10, 2007.
+
+\bibitem{cisco_vlan_whitepaper}
+Cisco Systems.
+\newblock Vlan security white paper - cisco catalyst 6500 series switches.
+\newblock
+  \url{http://www.cisco.com/en/US/products/hw/switches/ps708/products_white_pa%
+per09186a008013159f.shtml}, 2002.
 
 \end{thebibliography}
