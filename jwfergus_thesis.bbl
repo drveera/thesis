@@ -198,4 +198,15 @@ Cisco Systems.
   \url{http://www.cisco.com/en/US/products/hw/switches/ps708/products_white_pa%
 per09186a008013159f.shtml}, 2002.
 
+\bibitem{iptables}
+The~Netfilter webmaster.
+\newblock The netfilter.org project.
+\newblock \url{http://www.netfilter.org/}, 2010.
+
+\bibitem{libnetfilterqueue}
+Harald Welte.
+\newblock The netfilter.org libnetfilter\_queue project.
+\newblock
+  \url{http://www.netfilter.org/projects/libnetfilter_queue/index.html}, 2010.
+
 \end{thebibliography}
