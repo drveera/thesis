@@ -14,10 +14,7 @@
 \contentsline {figure}{\numberline {6.2}{\ignorespaces Data flow architecture of \textit {iptables}, the packet filtering firewall with \textit {NetFilter} located within the Linux kernel. The input and output ''chains" within \textit {NetFilter} provide an interface for administrators to control and filter packets sent into user space.\relax }}{23}
 \contentsline {figure}{\numberline {6.3}{\ignorespaces A detailed look at the logic within the \textit {NetFilter} chains that makeup the Ingress and Egress controllers on compute nodes.\relax }}{24}
 \contentsline {figure}{\numberline {6.4}{\ignorespaces State diagram of an example window controller.\relax }}{25}
-\contentsline {figure}{\numberline {7.1}{\ignorespaces TDMA effect on TCP application performance and demonstration of payload size effect on network throughput.\relax }}{27}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces The network architecture of TDMA testbed.\relax }}{26}
 \contentsline {figure}{\numberline {7.2}{\ignorespaces A trace of network traffic under performance testing while TDMA controls access.\relax }}{28}
-\contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{28}
-\contentsline {figure}{\numberline {7.4}{\ignorespaces The network architecture of our demonstration test bed.\relax }}{29}
-\contentsline {figure}{\numberline {7.5}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{30}
-\contentsline {figure}{\numberline {7.6}{\ignorespaces An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - denoted as red and blue.\relax }}{31}
-\contentsline {figure}{\numberline {7.7}{\ignorespaces An example trace of applications operating without TDMA. Note the interweaving of traffic from the different security groups - denoted as red and blue.\relax }}{32}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{29}
+\contentsline {figure}{\numberline {B.1}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{36}

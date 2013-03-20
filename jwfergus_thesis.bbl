@@ -22,6 +22,12 @@ V.S. Arackal, B.~Arunachalam, MB~Bijoy, BB~Prahlada~Rao, B.~Kalasagar,
 \newblock In {\em Internet Multimedia Services Architecture and Applications
   (IMSAA), 2009 IEEE International Conference on}, pages 1--6. IEEE, 2009.
 
+\bibitem{blum2003network}
+Richard Blum.
+\newblock {\em Network Performance Open Source Toolkit: Using Netperf,
+  tcptrace, NISTnet, and SSFNet}.
+\newblock Wiley, 2003.
+
 \bibitem{borrill2007investigation}
 Julian Borrill, Leonid Oliker, John Shalf, and Hongzhang Shan.
 \newblock Investigation of leading hpc i/o performance using a
@@ -100,10 +106,22 @@ A.~Keller and A.~Reinefeld.
 \newblock Anatomy of a resource management system for hpc clusters.
 \newblock {\em Annual Review of Scalable Computing}, 3(1):1--31, 2001.
 
+\bibitem{king2000parallel}
+J~King.
+\newblock Parallel ftp performance in a high-bandwidth, high-latency wan.
+\newblock {\em SC2000, November}, 2000.
+
 \bibitem{kloth2001derived}
 Raymond Kloth.
 \newblock Derived vlan mapping technique, March~27 2001.
 \newblock US Patent 6,208,649.
+
+\bibitem{kolahi2008impact}
+Samad~S Kolahi, Shaneel Narayan, Du~DT Nguyen, Yonathan Sunarto, and Paul Mani.
+\newblock The impact of wireless lan security on performance of different
+  windows operating systems.
+\newblock In {\em Computers and Communications, 2008. ISCC 2008. IEEE Symposium
+  on}, pages 260--264. IEEE, 2008.
 
 \bibitem{blue_gene}
 Argonne~National Laboratory.
@@ -208,5 +226,12 @@ Harald Welte.
 \newblock The netfilter.org libnetfilter\_queue project.
 \newblock
   \url{http://www.netfilter.org/projects/libnetfilter_queue/index.html}, 2010.
+
+\bibitem{zhang2010evaluating}
+Binbin Zhang, Xiaolin Wang, Rongfeng Lai, Liang Yang, Zhenlin Wang, Yingwei
+  Luo, and Xiaoming Li.
+\newblock Evaluating and optimizing i/o virtualization in kernel-based virtual
+  machine (kvm).
+\newblock {\em Network and Parallel Computing}, pages 220--231, 2010.
 
 \end{thebibliography}

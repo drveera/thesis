@@ -1,53 +1,51 @@
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: jwfergus_thesis.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 159 of file jwfergus_thesis.aux
+Illegal, another \bibstyle command---line 169 of file jwfergus_thesis.aux
  : \bibstyle
  :          {plain}
 I'm skipping whatever remains of this command
 Database file #1: bibliography.bib
-Warning--I didn't find a database entry for "alg:control_server"
-Warning--I didn't find a database entry for "app:tdma_algorithms"
 Warning--empty booktitle in dean2009designs
-You've used 35 entries,
+You've used 39 entries,
             2118 wiz_defined-function locations,
-            686 strings with 10235 characters,
-and the built_in function-call counts, 11009 in all, are:
-= -- 1056
-> -- 533
-< -- 11
-+ -- 219
-- -- 178
-* -- 650
-:= -- 1789
-add.period$ -- 109
-call.type$ -- 35
-change.case$ -- 192
+            704 strings with 10953 characters,
+and the built_in function-call counts, 12567 in all, are:
+= -- 1210
+> -- 613
+< -- 13
++ -- 252
+- -- 206
+* -- 748
+:= -- 2039
+add.period$ -- 122
+call.type$ -- 39
+change.case$ -- 217
 chr.to.int$ -- 0
-cite$ -- 36
-duplicate$ -- 400
-empty$ -- 925
-format.name$ -- 178
-if$ -- 2373
+cite$ -- 40
+duplicate$ -- 465
+empty$ -- 1037
+format.name$ -- 206
+if$ -- 2708
 int.to.chr$ -- 0
-int.to.str$ -- 35
-missing$ -- 17
-newline$ -- 175
-num.names$ -- 70
-pop$ -- 298
+int.to.str$ -- 39
+missing$ -- 22
+newline$ -- 195
+num.names$ -- 78
+pop$ -- 331
 preamble$ -- 1
-purify$ -- 157
+purify$ -- 179
 quote$ -- 0
-skip$ -- 325
+skip$ -- 375
 stack$ -- 0
-substring$ -- 484
-swap$ -- 106
-text.length$ -- 11
+substring$ -- 569
+swap$ -- 129
+text.length$ -- 13
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 138
+type$ -- 152
 warning$ -- 1
-while$ -- 101
-width$ -- 37
-write$ -- 369
+while$ -- 115
+width$ -- 41
+write$ -- 412
 (There was 1 error message)

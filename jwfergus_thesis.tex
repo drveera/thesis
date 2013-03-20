@@ -413,8 +413,6 @@ To determine the network access states for the next time window the scheduler mu
 
 For a detailed algorithm of the control server see Algorithm~\ref{alg:control_server} in Appendix~\ref{app:tdma_algorithms}.
 
-
-
 \begin{figure}
 \centering
 \includegraphics[scale=0.62]{control_state_diagram.pdf}
@@ -422,21 +420,42 @@ For a detailed algorithm of the control server see Algorithm~\ref{alg:control_se
 \label{fig:control_state_diagram}
 \end{figure}
 
-
 \chapter{Performance}
+\label{chap:performance}
+To analyze the performance of TDMA a series of network performance tests were run using Netperf, an open source network performance tool that is installed by default on most Linux distributions~\cite{netperf}. These tests were run on a TDMA testbed run in Impact Lab at Arizona State University. The results showed a small, but significant overhead in terms of reduced throughput when using TDMA to separate network traffic. The results also clearly show the temporal division of network traffic between security groups. 
 
 \begin{figure}
-\centerline{\includegraphics{TCP_Performance.pdf}}
-\caption{TDMA effect on TCP application performance and demonstration of payload size effect on network throughput.}
-\label{fig:TCP_Performance}
-\end{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{tdm_demo_setup.pdf}
+  \end{center}
+  \caption{The network architecture of TDMA testbed.}
+\label{fig:tdm_demo_setup}
+\end{figure} 
 
+\section{TDMA Testbed}
+The testbed consisted of five servers (four compute nodes and one control server) each connected to a single hub according to the layout shown in Figure~\ref{fig:tdm_demo_setup}. For reproduction purposes, the TDMA testbed is described in more detail in Appendix~\ref{app:tdma_testbed}. 
+
+\section{Performance Tests}
+Using the TDMA testbed we ran two series of performance tests, one to display the temporal division of security group packets, and the other to measure TDMA's overhead on system throughput.
+\subsection{Netperf}
+Netperf is the de facto standard for network throughput measurement~\cite{king2000parallel}\cite{blum2003network}\cite{kolahi2008impact}\cite{zhang2010evaluating} from which we utilized two major TCP communication test types:
+\begin{enumerate}
+\item TCP Stream Performance (TCP\_ STRM) - a simple test of bulk data transfer in a client to server manner. This tests the combined throughput of both the network and the networking interface of the client and server. 
+\item TCP Request Response (TCP\_ RR) - a test of TCP request and response rates between client and server. In addition to measuring the network's throughput, this test measures the throughput of TCP transaction handling rather than just buffered data transfer, the main goal of the TCP Stream Performance test.
+\end{enumerate}
+Both of these tests are customizable by the packet payload size, send buffer, and receive buffer.
+\subsection{Temporal Division}
+The main goal of this test was to display the temporal division of security group packets. As such, variations on payload size and send/receive buffers makes little difference. Figure~\ref{fig:Switching} shows an historical trace of packets transferred by two security groups, both running TCP\_ STRM tests under TDMA. TDMA was configured to have time windows of 1 second, the divisions of which are clearly visible.
 \begin{figure}
 \centering
 \includegraphics[scale=0.8]{Switching.pdf}
 \caption{A trace of network traffic under performance testing while TDMA controls access.}
 \label{fig:Switching}
 \end{figure}
+
+\subsection{Overhead}
+This series of tests was used to measure TDMA's overhead when compared to the same tests run without TDMA. In it, both TCP\_ RR and TCP\_ STRM tests were ran on variations of payload size for 5 minutes each, with two security groups. Payload sizes (in bytes) were varied by powers of two: 1024, 2048, 4096, 8192, and 16384. The resulting throughputs were averaged through payload sizes to create throughput values for each test with and without TDMA enforcement.
+Figure~\ref{fig:detailed_performance} shows the results of this test series. It is visible that, although significant, the overhead of TDMA is not dramatic. The overhead on TCP\_ RR was an averaged 14\% reduction in throughput, while TCP\_ STRM tests showed a smaller 11\% reduction in throughput. 
 
 \begin{figure}
 \centering
@@ -445,72 +464,14 @@ For a detailed algorithm of the control server see Algorithm~\ref{alg:control_se
 \label{fig:detailed_performance}
 \end{figure}
 
-\section{Expected Values}
-
-\begin{table}
-	\begin{center}
-	    \begin{tabular}{  l | r  }
-	    Technical Specifications & \\ \hline
-	    CPUs & 16 cores @ 2.2GHz \\
-	    Main Memory & 32GB @ DDR3\\
-	    \end{tabular}
-	\end{center}
-	\caption{Technical specifications of compute nodes within the Titan at ORNL.}
-	\label{tab:titan_ORNL}
-\end{table}
-MAKE SURE TO CITE NETPERF~\cite{netperf}
-Leading systems in high performance computing can serve as indicators of where commercial HPC systems will be in the upcoming years. The Titan system at Oak Ridge National Laboratories (ORNL) is one such system, the technical details of which are displayed in Table~\ref{tab:titan_ORNL}.
-
-Here we attempt to quantify how the mechanism affects memory usage at the compute node level and effective bandwidth.
-\begin{description}
-    \item[$T_{on, n}$] Time, within a window, where compute node $n$ has access to the network.
-    \item[$T_{window}$] Length in time of a single window.
-    \item[$\Pi_{app, n}$] Speed at which the application on compute node $n$ generates network traffic.
-    \item[$\Pi_{NIC, n}$] Speed at which the NIC on compute node $n$ can transmit traffic onto the network.
-\end{description} 
-
-\section{Case Study}
-To verify and test the mechanism a test bed was created out of five Dell $1955$ servers seen in Figure~\ref{fig:test_bed}. These servers run Ubuntu server version 12.04 and had their network interfaces configured and connected according to Figure~\ref{fig:tdm_demo_setup}. 
-
-To simulate job execution each node ran a program that sent ICMP (ping) commands at stochastic intervals and speeds to the other member other member of the security group. The mechanism, started and controlled at the control server (see Figure~\ref{fig:test_bed}) alternated between network access for each security group at a time interval of one second of network access per group. A Wireshark (REF PACKET SNIFFING) trace was ran at the control server and the results of which can be seen in Figure~\ref{fig:wireshark} showing a history of packets sent through the network. The black entries represent communications originating from the control server, while the red and blue entries represent packets originating from nodes within the security group. [REMOVE MAKE IMAGE OF RANDOMIZED PINGING AND COMPARE THE BEFORE AFTER - MENTION THIS IS EGRESS INFORMATION, FIND WAY TO SHOW INGRESS.]
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.9\textwidth]{tdm_demo_setup.pdf}
-  \end{center}
-  \caption{The network architecture of our demonstration test bed.}
-\label{fig:tdm_demo_setup}
-\end{figure}
-
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.9\textwidth]{test_bed.jpg}
-  \end{center}
-  \caption{The TDMA test bed located in Impact Lab at Arizona State University.}
-\label{fig:test_bed}
-\end{figure}
-    
-    
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.9\textwidth]{wireshark.jpg}
-  \end{center}
-  \caption{An example trace of the mechanism's time division property captured using the packet capturing application Wireshark. The colored records represent traffic based from compute nodes of two separate security groups - denoted as red and blue.}
-\label{fig:wireshark}
-\end{figure}
-
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.9\textwidth]{wireshark_random.jpg}
-  \end{center}
-  \caption{An example trace of applications operating without TDMA. Note the interweaving of traffic from the different security groups - denoted as red and blue.}
-\label{fig:wireshark_random}
-\end{figure}
-
-\section{Security Validation}
 \chapter{Conclusion}
-The problem of enforcing authenticated access to resources in an HPC environment is a difficult one. Further, creating a solution that is intuitive and secure enough to convince highly sceptical stakeholders of its security narrows available options. This thesis presents a method of solving this problem that is both intuitive and verifiably secure, in real time. The worst case performance penalty of utilizing this mechanism is shown to be within bounds of reasonable expectations. Practical performance is expected to minimize the overhead of the mechanism. 
+The problem of preventing data sharing among users in an HPC environment is a difficult one. Further, creating a solution that is intuitive and secure enough to convince highly sceptical stakeholders with great levels of risk of its security narrows available options. Solutions that exist in similar domains are presented in Section~\ref{sec:insufficient_solutions}, and shown to be insufficient for security reasons or difficult to verify.
+
+This thesis presents a method of solving this niche problem that is thorough, intuitive, and verifiable in real time using simple packet sniffing. TDMA was inspired by the desire to mimic the physical separation of users that is so convincing to the stakeholder we are trying to persuade. This inspiration manifested in a solution that performs temporal separation of users in lieu of physical separation.
+
+TDMA's operations are then formalized in Section~\ref{sec:formal_definition} as a grammar, providing an unambiguous description of operations. Out implementation of TDMA on an Ethernet network is then described and analyzed in Chapters~\ref{chap:implementation} and~\ref{chap:performance}. TDMA's effects are shown to be apparent in Figure~\ref{fig:Switching} and its overhead shown to be within reason considering the massive performance and financial benefits that come from running workloads concurrently.
 \section{Further Work}
-Implement dynamic scheduling algorithm on the control server using memory usage statistics from compute nodes. 
+While TDMA has been implemented for a small Ethernet testbed, more work remains to be done. To gather more verbose performance measurements, TDMA needs to be enforced on standard HPC workloads, rather than simple network performance tests. While round-robin scheduling is sufficient for small testbeds, more intelligent scheduling based on application bandwidth need should be implemented and tested. Finally, to thoroughly convince skeptical stakeholders, formal verification of implementation code should be performed to ensure the formal design in Section~\ref{sec:formal_definition} matched the code that implements it.
 \appendix
 \chapter{Implemented TDMA Algorithms}
 \label{app:tdma_algorithms}
@@ -583,6 +544,19 @@ Implement dynamic scheduling algorithm on the control server using memory usage 
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}	
+
+\chapter{TDMA Testbed Details}
+\label{app:tdma_testbed}
+To verify and test the mechanism a test bed was created out of five Dell $1955$ servers seen in Figure~\ref{fig:test_bed}. These servers run Ubuntu server version 12.04 and had their network interfaces configured and connected according to Figure~\ref{fig:tdm_demo_setup}.  
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{test_bed.jpg}
+  \end{center}
+  \caption{The TDMA test bed located in Impact Lab at Arizona State University.}
+\label{fig:test_bed}
+\end{figure}
+
 \bibliographystyle{plain}
 \bibliography{bibliography}
 
