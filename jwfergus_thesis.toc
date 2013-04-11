@@ -25,7 +25,8 @@
 \contentsline {section}{\numberline {4.3}Network Fabric Agnostic}{14}
 \contentsline {section}{\numberline {4.4}User Application Transparent}{14}
 \contentsline {chapter}{\chapternumberline {5}Time Division Multiple Access of Network Access}{15}
-\contentsline {section}{\numberline {5.1}Formal Definition}{17}
+\contentsline {section}{\numberline {5.1}Constraints on TDMA}{17}
+\contentsline {section}{\numberline {5.2}Formal Definition}{17}
 \contentsline {chapter}{\chapternumberline {6}Implementation}{20}
 \contentsline {section}{\numberline {6.1}Overview}{20}
 \contentsline {section}{\numberline {6.2}State Controller}{21}
@@ -38,8 +39,10 @@
 \contentsline {subsection}{Netperf}{27}
 \contentsline {subsection}{Temporal Division}{27}
 \contentsline {subsection}{Overhead}{28}
-\contentsline {chapter}{\chapternumberline {8}Conclusion}{30}
-\contentsline {section}{\numberline {8.1}Further Work}{30}
-\contentsline {appendix}{\chapternumberline {A}Implemented TDMA Algorithms}{33}
-\contentsline {appendix}{\chapternumberline {B}TDMA Testbed Details}{36}
-\contentsline {chapter}{Bibliography}{38}
+\contentsline {subsection}{ping}{29}
+\contentsline {subsection}{TDMA's effect on RTT}{29}
+\contentsline {chapter}{\chapternumberline {8}Conclusion}{32}
+\contentsline {section}{\numberline {8.1}Further Work}{32}
+\contentsline {appendix}{\chapternumberline {A}Implemented TDMA Algorithms}{35}
+\contentsline {appendix}{\chapternumberline {B}TDMA Testbed Details}{38}
+\contentsline {chapter}{Bibliography}{40}

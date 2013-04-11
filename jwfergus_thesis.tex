@@ -278,6 +278,12 @@ The size and order of time windows are controlled by a scheduling policy within 
 
 Figure~\ref{fig:network_access_switching} shows an intuitive graphical example of network access switching between \textit{security groups} as the system passes through time windows.
 
+\section{Constraints on TDMA}
+For TDMA to function in an HPC environment, a number of practical constraints must be enforced. These constraints revolve around ensuring that user applications do not experience disruptively long periods of network denial.
+\begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
+\item Time Window Size - 
+\item "Fair" Window Scheduling - 
+\end{enumerate}
 \section{Formal Definition}
 \label{sec:formal_definition}
 Before discussing our implementation of the solution, we first define an abstract definition that describes how the mechanism works beyond any specific implementation and in a more formal way than the beginning of this chapter. The best way to describe this mechanism is through a language that represents the mechanism in operation. This language is defined formally by stating the grammar that generates it.
@@ -422,7 +428,7 @@ For a detailed algorithm of the control server see Algorithm~\ref{alg:control_se
 
 \chapter{Performance}
 \label{chap:performance}
-To analyze the performance of TDMA a series of network performance tests were run using Netperf, an open source network performance tool that is installed by default on most Linux distributions~\cite{netperf}. These tests were run on a TDMA testbed run in Impact Lab at Arizona State University. The results showed a small, but significant overhead in terms of reduced throughput when using TDMA to separate network traffic. The results also clearly show the temporal division of network traffic between security groups. 
+To analyze the performance of TDMA a series of network performance tests were run using Netperf, an open source network performance tool that is installed by default on most Linux distributions~\cite{netperf} and the common UNIX \textit{ping} command. These tests were run on a TDMA testbed run in Impact Lab at Arizona State University. The results showed a small, but significant overhead in terms of reduced throughput when using TDMA to separate network traffic, as well as a significant impact to round trip time (RTT). The results also clearly show the temporal division of network traffic between security groups. 
 
 \begin{figure}
   \begin{center}
@@ -436,7 +442,7 @@ To analyze the performance of TDMA a series of network performance tests were ru
 The testbed consisted of five servers (four compute nodes and one control server) each connected to a single hub according to the layout shown in Figure~\ref{fig:tdm_demo_setup}. For reproduction purposes, the TDMA testbed is described in more detail in Appendix~\ref{app:tdma_testbed}. 
 
 \section{Performance Tests}
-Using the TDMA testbed we ran two series of performance tests, one to display the temporal division of security group packets, and the other to measure TDMA's overhead on system throughput.
+Using the TDMA testbed we ran three series of performance tests, one to display the temporal division of security group packets, another to measure TDMA's overhead on system throughput, and a final test of impact on RTT.
 \subsection{Netperf}
 Netperf is the de facto standard for network throughput measurement~\cite{king2000parallel}\cite{blum2003network}\cite{kolahi2008impact}\cite{zhang2010evaluating} from which we utilized two major TCP communication test types:
 \begin{enumerate}
@@ -463,6 +469,34 @@ Figure~\ref{fig:detailed_performance} shows the results of this test series. It 
 \caption{The impact of TDMA on TCP performance under two different 'netperf' tests.}
 \label{fig:detailed_performance}
 \end{figure}
+
+\subsection{ping}
+\textit{ping} is the de facto network connectivity test. Using Internet Control Message Protocol (ICMP) messages, \textit{ping} sends a message from a local network node to a remote node, and the remote node should respond back if it receives this message. If a response is received from a remote node then network connections are possible. Reasons for \textit{ping} to fail are either a lack of connectivity or firewall rules on either machine that deny ICMP communication (not uncommon in production settings for security reasons). For testing purposes, ping also includes the RTT of the message, i.e. the time it took for the local node to receive a response. 
+
+\subsection{TDMA's effect on RTT}
+To test TDMA's effect on RTT, two tests were performed: the test bed run with \textit{ping}s issued every $.2$ seconds for $5$ minutes without TDMA , and another test using \textit{ping}s issued every $.2$ seconds for $5$ minutes with TDMA enabled. Without TDMA, these \textit{ping}s have a mean RTT of under $1ms$. The RTT of \textit{ping}s with TDMA enabled are shown in Figure~\ref{fig:rtt_enabled}.
+
+Figure~\ref{fig:rtt_enabled} shows the RTT of \textit{ping}s under TDMA sorted according to RTT. The results can be divided into two major sections, \textit{ping}s with RTT comparable to operation without TDMA (the low RTT on the left portion of the graph) and RTT affected by TDMA (the right side of the graph). 
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.85]{rtt_enabled.pdf}
+\caption{RTT of \textit{ping} under TDMA.}
+\label{fig:rtt_enabled}
+\end{figure}
+
+The linear growth (see Figure~\ref{fig:rtt_2_fits}) of RTT under TDMA can be understood by recognizing how the \textit{ping} messages interact with TDMA. As the \textit{ping} messages are issued at a constant interval, during periods of network denial these messages are being queued in order. Messages enqueued at the beginning of a network denial period wait longer in the queue to reach the network than messages enqueued just before network access is enabled. Due to the steady period of message generation (every $.2$ seconds), there is a steady linear increase in RTT for these messages. 
+
+Furthermore, when, during a period of network access, these messages are received by the remote node, there is a chance that the remote node will not have processed the message to respond in time before another period of network denial is enforced. This can drive the RTT up to the time of two full time windows, in this case $2$ seconds ($1$ second per time window).
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.85]{rtt_2_fits.pdf}
+\caption{Linear regression fits of two high RTT sections within RTT results under TDMA.}
+\label{fig:rtt_2_fits}
+\end{figure}
+
+
 
 \chapter{Conclusion}
 The problem of preventing data sharing among users in an HPC environment is a difficult one. Further, creating a solution that is intuitive and secure enough to convince highly sceptical stakeholders with great levels of risk of its security narrows available options. Solutions that exist in similar domains are presented in Section~\ref{sec:insufficient_solutions}, and shown to be insufficient for security reasons or difficult to verify.

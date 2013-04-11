@@ -17,4 +17,6 @@
 \contentsline {figure}{\numberline {7.1}{\ignorespaces The network architecture of TDMA testbed.\relax }}{26}
 \contentsline {figure}{\numberline {7.2}{\ignorespaces A trace of network traffic under performance testing while TDMA controls access.\relax }}{28}
 \contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{29}
-\contentsline {figure}{\numberline {B.1}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{36}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces RTT of \textit {ping} under TDMA.\relax }}{30}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Linear regression fits of two high RTT sections within RTT results under TDMA.\relax }}{31}
+\contentsline {figure}{\numberline {B.1}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{38}
