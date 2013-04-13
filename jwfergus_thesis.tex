@@ -274,15 +274,28 @@ A fundamental requirement of the solution is that it be transparent to user appl
 
 The TDMA scheme introduced in Chapter~\ref{chap:introduction}: Section~\ref{sec:TDMA_intro} mimics the security of physical separation by enforcing temporal separation of network access (and denial) according to \textit{security groups}. This network access denial must be enforced at the operating system level on each compute node and controlled by the \textit{control server} which separates them into time windows. By denying disparate \textit{security groups} the ability to send or receive on the network during the same time window, both passive (packet sniffing) and active (packet insertion) data sharing are prevented.
 
-The size and order of time windows are controlled by a scheduling policy within the \textit{control server}. Figure~\ref{fig:network_access_slots} give a simple example of a round-robin policy on two \textit{security groups}, although more complex scheduling can be created to optimize for throughput or enforce prioritization. Because the \textit{control server} modulates the opening and closing of network access at each time window, very fine grained control of scheduling policy can be achieved. It is possible to switch from round-robin scheduling during times of low network traffic to modulated window size during heavy usage by particular users, or according to whatever quality of service scheme best fits the applications. A number of heuristics are useful to consider for the creation of a dynamic priority scheduling algorithm: queue memory usage of compute nodes, number of TCP timeouts, and externally imposed priorities. 
+\section{Centralized Scheduling}
+The size and order of time windows are controlled by a scheduling policy within the \textit{control server}. Figure~\ref{fig:network_access_slots} give a simple example of a round-robin policy on two \textit{security groups}, although more complex scheduling can be created to optimize for throughput or enforce prioritization. Because the \textit{control server} modulates the opening and closing of network access at each time window, very fine grained control of scheduling policy can be achieved. It is possible to switch from round-robin scheduling during times of low network traffic to modulated window size during heavy usage by particular users, or according to whatever quality of service scheme best fits the applications. A number of heuristics are useful to consider for the creation of a dynamic priority scheduling algorithm: queue memory usage of compute nodes, number of TCP timeouts (see Section ~\ref{sec:constraints}), and externally imposed priorities. 
+
+To perform network access modulation the \textit{control server} must have knowledge of resource assignment within the system. This can be managed by a shared data structure between the TDMA \textit{control server} and the system resource manager, such as a one-to-one mapping from IP address to user application (i.e., \textit{security group}) or by providing the \textit{control server} with API access to the resource manager.
+
+\subsection{Dynamic Job Scheduling}
+As jobs are added and finish according to the resource manager, TDMA manages this dynamism by:
+\begin{enumerate}
+\item preparing nodes to run user application (performed by resource manager) and registering these nodes and their network information with control server, and
+\item the control server recognizing and adding/removing this security group to TDMA access/denial schedule.
+\end{enumerate}
 
 Figure~\ref{fig:network_access_switching} shows an intuitive graphical example of network access switching between \textit{security groups} as the system passes through time windows.
 
 \section{Constraints on TDMA}
-For TDMA to function in an HPC environment, a number of practical constraints must be enforced. These constraints revolve around ensuring that user applications do not experience disruptively long periods of network denial.
+\label{sec:constraints}
+For TDMA to function in an HPC environment, a number of practical constraints must be enforced. These constraints revolve around ensuring that user applications do not experience disruptively long periods of network denial. The main consideration is of TCP timeouts, since TCP is the predominant data transfer protocol in HPC~\cite{allcock2002data}. Although application programmers can specify TCP timeout values~\cite{eggert2009tcp}, a practical goal is to prevent delaying communication beyond the default TCP timeout. Default values for TCP timeout vary across operating systems with some Linux distributions being as high as $20$ seconds, and Windows operating systems being as low as $5$ seconds.
+
+Given a TCP timeout value for the operating systems in use within an HPC environment:
 \begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
-\item Time Window Size - 
-\item "Fair" Window Scheduling - 
+\item Time Window Size - any individual time window cannot be longer than the default TCP timeout value. If any individual time window is that large, then all other security groups are guaranteed to have their TCP connections reset waiting for their time window.
+\item "Fair" Window Scheduling - time windows must be scheduled in such a manner that no individual security group experiences a period of network denial that lasts longer than the default TCP timeout. This constraint implies a periodicity to time window scheduling by the control server.
 \end{enumerate}
 \section{Formal Definition}
 \label{sec:formal_definition}
@@ -407,7 +420,7 @@ The queue structure in Figure~\ref{fig:netfilter_in_out_chains}'s output section
 \label{fig:netfilter_in_out_chains}
 \end{figure}
 
-\section{control server}
+\section{Control Server}
 The control server has three major tasks: 
 \begin{enumerate}
 \item Determine system network access states for the next time window.

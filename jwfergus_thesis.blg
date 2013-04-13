@@ -1,51 +1,52 @@
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: jwfergus_thesis.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 160 of file jwfergus_thesis.aux
+Illegal, another \bibstyle command---line 170 of file jwfergus_thesis.aux
  : \bibstyle
  :          {plain}
 I'm skipping whatever remains of this command
 Database file #1: bibliography.bib
 Warning--empty booktitle in dean2009designs
-You've used 39 entries,
+Warning--empty journal in eggert2009tcp
+You've used 41 entries,
             2118 wiz_defined-function locations,
-            704 strings with 10953 characters,
-and the built_in function-call counts, 12567 in all, are:
-= -- 1210
-> -- 613
+            714 strings with 11326 characters,
+and the built_in function-call counts, 13387 in all, are:
+= -- 1283
+> -- 679
 < -- 13
-+ -- 252
-- -- 206
-* -- 748
-:= -- 2039
-add.period$ -- 122
-call.type$ -- 39
-change.case$ -- 217
++ -- 278
+- -- 230
+* -- 819
+:= -- 2186
+add.period$ -- 128
+call.type$ -- 41
+change.case$ -- 235
 chr.to.int$ -- 0
-cite$ -- 40
-duplicate$ -- 465
-empty$ -- 1037
-format.name$ -- 206
-if$ -- 2708
+cite$ -- 43
+duplicate$ -- 486
+empty$ -- 1081
+format.name$ -- 230
+if$ -- 2863
 int.to.chr$ -- 0
-int.to.str$ -- 39
-missing$ -- 22
-newline$ -- 195
-num.names$ -- 78
-pop$ -- 331
+int.to.str$ -- 41
+missing$ -- 24
+newline$ -- 205
+num.names$ -- 82
+pop$ -- 349
 preamble$ -- 1
-purify$ -- 179
+purify$ -- 195
 quote$ -- 0
-skip$ -- 375
+skip$ -- 390
 stack$ -- 0
-substring$ -- 569
-swap$ -- 129
+substring$ -- 604
+swap$ -- 130
 text.length$ -- 13
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 152
-warning$ -- 1
-while$ -- 115
-width$ -- 41
-write$ -- 412
+type$ -- 160
+warning$ -- 2
+while$ -- 121
+width$ -- 43
+write$ -- 432
 (There was 1 error message)

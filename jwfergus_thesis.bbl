@@ -7,6 +7,13 @@ United States National~Security Administration.
   \url{http://www.nsa.gov/ia/programs/inline_media_encryptor/index.shtml},
   January 2009.
 
+\bibitem{allcock2002data}
+Bill Allcock, Joe Bester, John Bresnahan, Ann~L Chervenak, Ian Foster, Carl
+  Kesselman, Sam Meder, Veronika Nefedova, Darcy Quesnel, and Steven Tuecke.
+\newblock Data management and transfer in high-performance computational grid
+  environments.
+\newblock {\em Parallel Computing}, 28(5):749--771, 2002.
+
 \bibitem{allcock2001secure}
 Bill Allcock, Joe Bester, John Bresnahan, Ann~L Chervenak, Carl Kesselman, Sam
   Meder, Veronika Nefedova, Darcy Quesnel, Steven Tuecke, and Ian Foster.
@@ -73,6 +80,11 @@ J.~Dean.
 \newblock Designs, lessons and advice from building large distributed systems.
 \newblock Presented at Large-Scale Distributed Systems and Middleware (LADIS),
   2009.
+
+\bibitem{eggert2009tcp}
+Lars Eggert and Fernando Gont.
+\newblock Tcp user timeout option.
+\newblock 2009.
 
 \bibitem{emery2011security}
 Jean-Yvesc Emery, C{\'e}dricc Vandenweghe, Brunoc Thery, et~al.
