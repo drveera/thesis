@@ -10,13 +10,13 @@
 \contentsline {figure}{\numberline {3.3}{\ignorespaces The assumed model of application execution in an HPC environment. $\alpha _{start}$ and $\alpha _{end}$ are periods where execution is I/O bound, and $\varepsilon $ is the prominent period where execution is CPU bound. This structure adheres to research showing batched I/O minimizes the I/O cost in terms of time.\relax }}{9}
 \contentsline {figure}{\numberline {5.1}{\ignorespaces A simple round-robin time window policy for two \textit {security groups} (S.G.$\#1$ and $\#2$).\relax }}{15}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces A simple example of network access switching between two \textit {security groups} (S.G.$\#1$ and $\#2$).\relax }}{16}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces State diagram of a compute node running the state controller.\relax }}{23}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Data flow architecture of \textit {iptables}, the packet filtering firewall with \textit {NetFilter} located within the Linux kernel. The input and output ''chains" within \textit {NetFilter} provide an interface for administrators to control and filter packets sent into user space.\relax }}{25}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces A detailed look at the logic within the \textit {NetFilter} chains that makeup the Ingress and Egress controllers on compute nodes.\relax }}{26}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces State diagram of an example window controller.\relax }}{27}
-\contentsline {figure}{\numberline {7.1}{\ignorespaces The network architecture of TDMA testbed.\relax }}{28}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces A trace of network traffic under performance testing while TDMA controls access.\relax }}{30}
-\contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{31}
-\contentsline {figure}{\numberline {7.4}{\ignorespaces RTT of \textit {ping} under TDMA.\relax }}{32}
-\contentsline {figure}{\numberline {7.5}{\ignorespaces Linear regression fits of two high RTT sections within RTT results under TDMA.\relax }}{33}
-\contentsline {figure}{\numberline {B.1}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{40}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces State diagram of a compute node running the state controller.\relax }}{24}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Data flow architecture of \textit {iptables}, the packet filtering firewall with \textit {NetFilter} located within the Linux kernel. The input and output ''chains" within \textit {NetFilter} provide an interface for administrators to control and filter packets sent into user space.\relax }}{26}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces A detailed look at the logic within the \textit {NetFilter} chains that makeup the Ingress and Egress controllers on compute nodes.\relax }}{27}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces State diagram of an example window controller.\relax }}{28}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces The network architecture of TDMA testbed.\relax }}{29}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces A trace of network traffic under performance testing while TDMA controls access.\relax }}{31}
+\contentsline {figure}{\numberline {7.3}{\ignorespaces The impact of TDMA on TCP performance under two different 'netperf' tests.\relax }}{32}
+\contentsline {figure}{\numberline {7.4}{\ignorespaces RTT of \textit {ping} under TDMA.\relax }}{33}
+\contentsline {figure}{\numberline {7.5}{\ignorespaces Linear regression fits of two high RTT sections within RTT results under TDMA.\relax }}{34}
+\contentsline {figure}{\numberline {B.1}{\ignorespaces The TDMA test bed located in Impact Lab at Arizona State University.\relax }}{41}

@@ -274,6 +274,8 @@ A fundamental requirement of the solution is that it be transparent to user appl
 
 The TDMA scheme introduced in Chapter~\ref{chap:introduction}: Section~\ref{sec:TDMA_intro} mimics the security of physical separation by enforcing temporal separation of network access (and denial) according to \textit{security groups}. This network access denial must be enforced at the operating system level on each compute node and controlled by the \textit{control server} which separates them into time windows. By denying disparate \textit{security groups} the ability to send or receive on the network during the same time window, both passive (packet sniffing) and active (packet insertion) data sharing are prevented.
 
+Figure~\ref{fig:network_access_switching} shows an intuitive graphical example of network access switching between \textit{security groups} as the system passes through time windows.
+
 \section{Centralized Scheduling}
 The size and order of time windows are controlled by a scheduling policy within the \textit{control server}. Figure~\ref{fig:network_access_slots} give a simple example of a round-robin policy on two \textit{security groups}, although more complex scheduling can be created to optimize for throughput or enforce prioritization. Because the \textit{control server} modulates the opening and closing of network access at each time window, very fine grained control of scheduling policy can be achieved. It is possible to switch from round-robin scheduling during times of low network traffic to modulated window size during heavy usage by particular users, or according to whatever quality of service scheme best fits the applications. A number of heuristics are useful to consider for the creation of a dynamic priority scheduling algorithm: queue memory usage of compute nodes, number of TCP timeouts (see Section ~\ref{sec:constraints}), and externally imposed priorities. 
 
@@ -286,17 +288,33 @@ As jobs are added and finish according to the resource manager, TDMA manages thi
 \item the control server recognizing and adding/removing this security group to TDMA access/denial schedule.
 \end{enumerate}
 
-Figure~\ref{fig:network_access_switching} shows an intuitive graphical example of network access switching between \textit{security groups} as the system passes through time windows.
+\subsection{Job Failure}
+Additional considerations must be made for the case when a scheduled job fails in some way. There are two major ways in which jobs can fail on the system, and each corresponds to a specific response from TDMA:
+\begin{enumerate}
+\item the job fails \textit{gracefully}. In this case, some aspect of the user application fails but does so in a way that does not halt the \textit{compute node} it is assigned. Under this scenario, TDMA operates normally and the resource manager and job scheduler are left to reallocate those resources and reschedule the job. 
+\item the job fails and halts an assigned \textit{compute node}. In this case of a \textit{compute node} halting error, TDMA on that node would be unable to function. This causes the TDMA system to enter an insecure state. Resumption from this insecure state can only happen by cancelling all jobs on the system and restarting again from initialization data. This is how TDMA operates in a fail safe manner. In the case that TDMA enters an insecure state (deviation from the operations defined in ~\ref{sec:formal_definition}) it must be assumed that the erroneous \textit{security group} could have either received network traffic from an outside \textit{security group} or transmitted network traffic to an outside \textit{security group}.
+\end{enumerate}
 
 \section{Constraints on TDMA}
 \label{sec:constraints}
-For TDMA to function in an HPC environment, a number of practical constraints must be enforced. These constraints revolve around ensuring that user applications do not experience disruptively long periods of network denial. The main consideration is of TCP timeouts, since TCP is the predominant data transfer protocol in HPC~\cite{allcock2002data}. Although application programmers can specify TCP timeout values~\cite{eggert2009tcp}, a practical goal is to prevent delaying communication beyond the default TCP timeout. Default values for TCP timeout vary across operating systems with some Linux distributions being as high as $20$ seconds, and Windows operating systems being as low as $5$ seconds.
+For TDMA to function in an HPC environment, a number of practical constraints must be enforced. These constraints revolve around ensuring that user applications have ample access to network resources. This implies that they do not experience disruptively long periods of network denial. 
+\subsection{TCP Timeout}
+The main consideration is of TCP timeouts, since TCP is the predominant data transfer protocol in HPC~\cite{allcock2002data}. Although application programmers can specify TCP timeout values~\cite{eggert2009tcp}, a practical goal is to prevent delaying communication beyond the default TCP timeout. Default values for TCP timeout vary across operating systems with some Linux distributions being as high as $20$ seconds, and Windows operating systems being as low as $5$ seconds.
 
 Given a TCP timeout value for the operating systems in use within an HPC environment:
 \begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
 \item Time Window Size - any individual time window cannot be longer than the default TCP timeout value. If any individual time window is that large, then all other security groups are guaranteed to have their TCP connections reset waiting for their time window.
 \item "Fair" Window Scheduling - time windows must be scheduled in such a manner that no individual security group experiences a period of network denial that lasts longer than the default TCP timeout. This constraint implies a periodicity to time window scheduling by the control server.
 \end{enumerate}
+
+\subsection{Window Size}
+Given a TCP timeout value, $timeout$, for the operating systems in use within an HPC environment, we define a relationship between window size, window transition overhead (the time it takes to transition from one window to another), and the timeout value.
+
+Suppose $SG$ is a set of \textit{security group}s, $sg\in SG$, on the system, $W_{sg}$ is the size of an individual time window allotted to $sg$, and $O_{sg}$ is the time it takes to enter and exit that time window (overhead). For any individual time window $W$ assigned to a \textit{security group} $current\_sg$, then the following must be true:
+
+\tab $\{W_{sg} + O_{sg}: \forall sg\in (SG / current\_sg)\} < timeout$
+
+
 \section{Formal Definition}
 \label{sec:formal_definition}
 Before discussing our implementation of the solution, we first define an abstract definition that describes how the mechanism works beyond any specific implementation and in a more formal way than the beginning of this chapter. The best way to describe this mechanism is through a language that represents the mechanism in operation. This language is defined formally by stating the grammar that generates it.
