@@ -33,7 +33,7 @@ It is commonly known that High Performance Computing (HPC) systems are most freq
 The driving forces behind this type of security are numerous but share the common origin of data so sensitive that measures above and beyond industry standard are used to ensure information security. This paper presents a network security solution that provides information security above and beyond industry standard, yet still enabling multi-user computations on the system. This paper's main contribution is a mechanism designed to enforce high level time division multiplexing of network access (Time Division Multiple Access, or TDMA) according to security groups. By dividing network access into time windows, interactions between applications over the network can be prevented in an easily verifiable way. 
 
 \asuacknowledgements
-{I would like to acknowledge and thank Dr. Gupta for taking a chance and inviting me to work in Impact Lab, Dr. Varsamopoulos for his immense technical guidance (especially regarding Linux), and Dr. Ball for his earnest support of this thesis and its goals. I am intellectually and personally indebted to the members of Impact Lab for their help with the myriad of tasks that arose during my time with the lab. Special mention must go to Dr. Tridib Mukherjee, Dr. Ayan Bannerjee, and (soon to be Dr.) Zahra Abbasi for helping me with their seemingly boundless knowledge of the research we did, as well as Robin Gilbert for being a true friend and great colleague. I thank Raytheon for their capital support of our research. Finally, I thank my parents and brother for their love and support.
+{I would like to acknowledge and thank Dr. Gupta for taking a chance and inviting me to work in Impact Lab, Dr. Varsamopoulos for his immense technical guidance (especially regarding Linux), and Dr. Ball for his earnest support of this thesis and its goals. I am intellectually and personally indebted to the members of Impact Lab for their help with the myriad of tasks that arose during my time with the lab. Special mention must go to Dr. Tridib Mukherjee, Dr. Ayan Bannerjee, and (soon to be Dr.) Zahra Abbasi for helping me with their seemingly boundless knowledge of the research we did, as well as Robin Gilbert for being a true friend and great colleague. I thank Raytheon for their capital support of our research, and the NSF for supporting work outside the scope of this thesis (through CNS-0855277-BlueTool: Infrastructure for Innovative Cyber Physical Data Center Management Research). Finally, I thank my parents and brother for their love and support.
 }
 
 	\newpage
@@ -56,7 +56,7 @@ The driving forces behind this type of security are numerous but share the commo
  \protect\noindent CHAPTER \protect\par
 
 }
-\chapter{Introduction}
+\chapter{INTRODUCTION}
 \label{chap:introduction}
 High Performance Computing (HPC) systems consist of numerous individual computing systems networked and administrated together such that they can be used as a single system. Examples of these systems from popular culture include custom made models such as the Cray I (historically one of the first systems deemed HPC) and the modern IBM Blue Gene~\cite{leavitt2012big}. More common examples are simple Computer Clusters such as Beowulf clusters in which Commercial Off The Shelf (COTS) equipment is utilized~\cite{buyya1999high}. These latter systems are simple enough that they are frequently implemented by single users within hobbyists' homes~\cite{brown2004engineering}. Figures~\ref{fig:beowulf}~, \ref{fig:crayi}, and \ref{fig:blue_gene} show examples of these systems.
 
@@ -114,7 +114,7 @@ The scheme works by inserting gates to network access at each computing node (co
 \end{figure}
 
 Chapter~\ref{chap:implementation} provides details on the implementation of this scheme, and Chapter~\ref{chap:tdma}: Section~\ref{sec:formal_definition} formally defines the scheme's operations.
-\chapter{Related Work}
+\chapter{RELATED WORK}
 The problem statement and proposed solution represent the intersection of two somewhat disparate fields - Time Division Multiple Access and High Performance Computing Security. Related works are therefore divided between the two. 
 \section{High Performance Computing Security}
 The size and cost of HPC environments dictates that each system is somewhat unique. The security solutions implemented within each are similarly unique. Sandholm et al.~\cite{sandholm2004ogsa} make an attempt at rectifying this larger problem by creating a framework that automates user access permissions and resource allocation using "XACML (eXtensible Access Control Markup Language)". They further extend their solution by tying it in to existing job submission tools (Globus Toolkit~\cite{globus_toolkit} and NorduGrid~\cite{nordugrid}). 
@@ -123,7 +123,7 @@ Allcock et al.~\cite{allcock2001secure} developed a high-speed data transport pr
 \section{Time Division Multiple Access}
 Mages and Feng~\cite{mages1999method} patented a similar control scheme of computing resources via a centralized controller over the network. Their scheme, however, specifies only local media resources of the node as under the control of the central administrative node. Furthermore, their patent is intended for a much wider distributed use as digital rights management and security in consumer media devices, rather than our work on security in HPC environments.
 
-\chapter{Problem Definition}
+\chapter{PROBLEM DEFINITION}
 \label{chap:problem_definition}
 We begin by defining an abstract HPC environment through which the general case of our security challenge is shown. In this section we provide brief descriptions of the major resources common to most HPC systems. Furthermore, to design our mechanism, certain assumptions must be made on how each resources is operated. 
 
@@ -136,6 +136,7 @@ We begin by defining an abstract HPC environment through which the general case 
 \end{figure}
 There are four basic resources in most HPC systems represented in Figure~\ref{fig:abstract_hpc_environment} as \begin{inparaenum}[\itshape a\upshape)]
 \item compute nodes, \item persistent storage, \item administrative nodes, and \item network infrastructure. Worth consideration also is the process of job allocation and the execution of jobs.\end{inparaenum}
+
 \subsection{Compute Nodes}
 Compute nodes are independent computing devices designated to run user submitted applications. These devices are capable of storing temporary data locally. They send and receive data across network infrastructure for three main purposes:\begin{inparaenum}[\itshape a\upshape)]
 \item storing or accessing data on the persistent storage devices;
@@ -229,11 +230,37 @@ The security fear of users with extremely sensitive data is that a different use
 
 So far we have described ways in which three of the four shared resources are secured by technology that is either certified by national defense agencies (as in the case of persistent storage) or intuitive and easily verifiable (as in the case of compute node board separation and administrative POSIX permissions). This leaves the shared networking resources as a point of data sharing. 
 
+Across the network compute nodes commonly transmit data to numerous destinations: other compute nodes working on the same application, persistent storage for long term access, and administrative nodes. Figure~\ref{fig:actions} shows examples of these common actions.
+
+Figure~\ref{fig:illegal_actions} shows examples of actions across the network that can share data between different user applications. There are two ways this can happen: 
+\begin{enumerate}
+\item a hypothetical User Application A (App A) can transmit a network packet with the destination listed as a compute node that is running code from a different application (App B), or 
+\item another User Application (App C) can actively receive all network packets that are visible over the network (commonly referred to as "packet sniffing").
+\end{enumerate}
+
+These are the actions that must be stopped in order to secure network resources as a shared medium.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{actions.pdf}
+\caption{Simple example of common actions on an HPC network.}
+\label{fig:actions}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{illegal_actions.pdf}
+\caption{Actions that could permit data sharing between different user applications.}
+\label{fig:illegal_actions}
+\end{figure}
+
+
+
 \section{Insufficient Solutions}
 \label{sec:insufficient_solutions}
 There exist current solutions for the strict problem of preventing plaintext data sharing, but these solutions lack certain qualities that make them sufficient for the narrow solution we're seeking when trying to assure users assuming significant risk. These existing solutions fail through their lack of thoroughness, lack of intuitiveness, inability to be simply verified, and even through established security flaws. 
 \subsection{Encryption}
-Socket to socket encryption is a common solution to preventing data theft over a network, though somewhat out of place in an HPC environment due to their overhead. This solution falls short in its inability to prevent data sharing. Though the data is encrypted, the value of the plaintext (unencrypted data) is commonly so high that copying, storing and later decrypting the network traffic a risk to be prevented.
+Socket to socket encryption is a common solution to preventing data theft over a network, though somewhat out of place in an HPC environment due to their overhead. This solution falls short in its inability to prevent data sharing as in the case of User Application C in Figure~\ref{fig:illegal_actions}. Though the data is encrypted, the value of the plaintext (unencrypted data) is commonly so high that copying, storing and later decrypting the network traffic a risk to be prevented.
 \subsection{Virtual Local Area Networks (VLANs)}
 VLANs, standardized in IEEE 802.1Q~\cite{ieee_vlan}, are a common solution to preventing data sharing specifically within large computing infrastructures such as data centers and mainframes, though sometimes used in HPC environments. VLANs work by tagging traffic on network switches and routers according to configurable tables of LAN membership matched with physical interface, with the intention of mimicking the configurability and security of LANs. Within the VLAN specification there lie two inherent flaw with VLANs to verifiability that meets our envisioned users' needs, as well as a few unresolved security flaws. 
 
@@ -243,9 +270,9 @@ VLAN solutions are difficult to verify in two ways:
 \item VLAN hardware is commonly manufactured by international firms that may have pressure from outside governments to include secret backdoors in the firmware, further exacerbating the previous verification difficulty. Examples of this uncertainty can be seen in a special report by the U.S. House of Representatives from October 8th, 2012~\cite{huawei}.
 \end{inparaenum}
 
-Furthermore, due to backwards compatibility standards outlined in IEEE 802.1Q, the tagging mechanism of VLANs can be abused via a ''double-encapsulated 802.1Q / Nested VLAN" attack which works by placing two VLAN tags on a packet. By doing so, during certain situations it is possible for packets to ''escape" their VLAN designation and convey messages to hosts outside their configured VLAN~\cite{cisco_vlan_whitepaper}.
+Furthermore, due to backwards compatibility standards outlined in IEEE 802.1Q, the tagging mechanism of VLANs can be abused via a ''double-encapsulated 802.1Q / Nested VLAN" attack which works by placing two VLAN tags on a packet. By doing so, during certain situations it is possible for packets to ''escape" their VLAN designation and convey messages to hosts outside their configured VLAN~\cite{cisco_vlan_whitepaper}, still allowing data sharing as in the case of User Application B in Figure~\ref{fig:illegal_actions}.
 
-\chapter{Design Goals}
+\chapter{DESIGN GOALS}
 \label{chap:design_goals}
 Chapter~\ref{chap:problem_definition}'s discussion on security flaws within HPC environments shows that there exists an untouched niche for a software solution that replicates the security of physical user separation. Here we describe the requirements and goals in designing our solution to this problem.
 \section{A More Thorough and Intuitive Network Security}
@@ -256,7 +283,7 @@ Within HPC environments the type, number, and scale of jobs assigned to any of t
 Two major technologies are used to network HPC systems: Ethernet and InfiniBand. Any tool for improving security across the broad spectrum of HPC systems must be capable of operating in each. Further, numerous network topologies exist within these technologies; switched fabric and tree structures are the most common for InfiniBand and Ethernet, respectively. For our purposes we define this solution to be network fabric agnostic if it is conceptually capable of being implemented in either Ethernet or InfiniBand networks. 
 \section{User Application Transparent}
 A fundamental requirement of the solution is that it be transparent to user applications. Applications written for HPC environments are often quite complex and it is likely that customers would be reluctant to make even minor modifications, especially to programs written in the past that are under re-use. For our purposes we define user application transparency as the ability to run an application without modification to successful end on an HPC system using our solution, given that it can also do so on a system not using our solution. 
-\chapter{Time Division Multiple Access of Network Access}
+\chapter{TIME DIVISION MULTIPLE ACCESS OF NETWORK ACCESS}
 \label{chap:tdma}
 \begin{figure}
 \centering
@@ -279,20 +306,20 @@ Figure~\ref{fig:network_access_switching} shows an intuitive graphical example o
 \section{Centralized Scheduling}
 The size and order of time windows are controlled by a scheduling policy within the \textit{control server}. Figure~\ref{fig:network_access_slots} give a simple example of a round-robin policy on two \textit{security groups}, although more complex scheduling can be created to optimize for throughput or enforce prioritization. Because the \textit{control server} modulates the opening and closing of network access at each time window, very fine grained control of scheduling policy can be achieved. It is possible to switch from round-robin scheduling during times of low network traffic to modulated window size during heavy usage by particular users, or according to whatever quality of service scheme best fits the applications. A number of heuristics are useful to consider for the creation of a dynamic priority scheduling algorithm: queue memory usage of compute nodes, number of TCP timeouts (see Section ~\ref{sec:constraints}), and externally imposed priorities. 
 
+\subsection{Dynamic Job Scheduling}
 To perform network access modulation the \textit{control server} must have knowledge of resource assignment within the system. This can be managed by a shared data structure between the TDMA \textit{control server} and the system resource manager, such as a one-to-one mapping from IP address to user application (i.e., \textit{security group}) or by providing the \textit{control server} with API access to the resource manager.
 
-\subsection{Dynamic Job Scheduling}
-As jobs are added and finish according to the resource manager, TDMA manages this dynamism by:
+As jobs are added and finish according to the resource manager, TDMA manages this dynamism as follows:
 \begin{enumerate}
-\item preparing nodes to run user application (performed by resource manager) and registering these nodes and their network information with control server, and
-\item the control server recognizing and adding/removing this security group to TDMA access/denial schedule.
+\item Non-allocated nodes run in a default state of network denial. Due to the whitelist, however, these nodes are still capable of communicating with the \textit{control server} and other administrative nodes such as the resource manager.
+\item Once a job is scheduled and allocated by the scheduler and resource manager, the \textit{control server} creates a \textit{security group} using network information from the resource manager and begins scheduling time windows for this \textit{security group} to communicate within itself.
 \end{enumerate}
 
 \subsection{Job Failure}
 Additional considerations must be made for the case when a scheduled job fails in some way. There are two major ways in which jobs can fail on the system, and each corresponds to a specific response from TDMA:
 \begin{enumerate}
 \item the job fails \textit{gracefully}. In this case, some aspect of the user application fails but does so in a way that does not halt the \textit{compute node} it is assigned. Under this scenario, TDMA operates normally and the resource manager and job scheduler are left to reallocate those resources and reschedule the job. 
-\item the job fails and halts an assigned \textit{compute node}. In this case of a \textit{compute node} halting error, TDMA on that node would be unable to function. This causes the TDMA system to enter an insecure state. Resumption from this insecure state can only happen by cancelling all jobs on the system and restarting again from initialization data. This is how TDMA operates in a fail safe manner. In the case that TDMA enters an insecure state (deviation from the operations defined in ~\ref{sec:formal_definition}) it must be assumed that the erroneous \textit{security group} could have either received network traffic from an outside \textit{security group} or transmitted network traffic to an outside \textit{security group}.
+\item the job fails and halts an assigned \textit{compute node}. In this case of a \textit{compute node} halting error, TDMA on that node would be unable to function. This causes the TDMA system to enter an insecure state. Resumption from this insecure state can only happen by cancelling all jobs on the system and restarting again from initialization data. This is how TDMA operates in a fail safe manner. In the case that TDMA enters an insecure state (deviation from the operations defined in Section~\ref{sec:formal_definition}) it must be assumed that the erroneous \textit{security group} could have either received network traffic from an outside \textit{security group} or transmitted network traffic to an outside \textit{security group}.
 \end{enumerate}
 
 \section{Constraints on TDMA}
@@ -313,6 +340,12 @@ Given a TCP timeout value, $timeout$, for the operating systems in use within an
 Suppose $SG$ is a set of \textit{security group}s, $sg\in SG$, on the system, $W_{sg}$ is the size of an individual time window allotted to $sg$, and $O_{sg}$ is the time it takes to enter and exit that time window (overhead). For any individual time window $W$ assigned to a \textit{security group} $current\_sg$, then the following must be true:
 
 \tab $\{W_{sg} + O_{sg}: \forall sg\in (SG / current\_sg)\} < timeout$
+
+Intuitively, this means that for any given security group, the time windows that occur between that group's access to the network (both their explicitly stated length and the overhead associated with transitioning between them) must be shorter, in total, than the defined timeout for the system. Note that while window size ($W_{sg}$) can be manipulated by the \textit{control server}, switching overhead ($O_{sg}$) is a function of implementation. Because this overhead reduces overall network throughput $O_{sg}$ is assumed to be minimized, and thus can be considered to remain relatively constant for each security group within a defined implementation. This equation, along with the constancy of $O_{sg}$, shows two interesting properties of TDMA operation:
+\begin{enumerate}
+\item The explicit window sizes $W_{sg}$ have a definite upper bound. For any specific window $W_{sg} < timeout$. Further, if through measurements of an implementation the HPC administrators can learn $O_{sg}$, then the specific upper bound for which $W_{sg} < (timeout + O_{sg})$ can be learned.
+\item While window sizes are maximally bound, the value of $O_{sg}$ implies a practical lower bound. As window sizes are reduced, the ratio of $\dfrac{O_{sg}}{W_{sg}}$ increases and approaches $1$, a point at which the entire time window is used to transition in and out of network access. This ratio, $\dfrac{O_{sg}}{W_{sg}}$, gives the fraction of time the system as a whole spends on TDMA overhead. To maximize overall network throughput $\dfrac{O_{sg}}{W_{sg}}$ must be minimized subject to $\{W_{sg} + O_{sg}: \forall sg\in (SG / current\_sg)\} < timeout$.
+\end{enumerate}
 
 
 \section{Formal Definition}
@@ -375,9 +408,9 @@ Finally, the language our mechanism accepts for security group \emph{S} can be f
 \tab $\Sigma = \Sigma ^1\cup \Sigma ^2$
 
 \tab $R = R^1\cup R^2$
-\chapter{Implementation}
+\chapter{IMPLEMENTATION}
 \label{chap:implementation}
-As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from Chapter~\ref{chap:design_goals}.
+As a proof of concept we have implemented a version of the tool for the Linux operating system using C++11~\cite{iso2012iec}. In this section we will describe the tool's architecture, operation, and how it adheres to the design goals from Chapter~\ref{chap:design_goals}.
 \section{Overview}
 The tool is composed of four major components:  the control server, ingress controller, egress controller, and the state controller. The control server can be located on any administrative node within the system, preferably co-located with the system job scheduler. The remaining controllers are located throughout the HPC environment, with a copy on each compute node that is designated to execute user applications. 
 
@@ -393,7 +426,7 @@ The state controller has four major tasks:
 \item Collect and store performance data on the egress queue's memory usage.
 \end{enumerate}
 
-A state machine of the state controller is shown in Figure~\ref{fig:node_state_diagram}. For a detailed algorithm of the state controller see Algorithm~\ref{alg:state_controller} in Appendix~\ref{app:tdma_algorithms}.
+A state machine diagram of the state controller is shown in Figure~\ref{fig:node_state_diagram}. For a detailed algorithm of the state controller see Algorithm~\ref{alg:state_controller} in Appendix~\ref{app:tdma_algorithms}.
 
 \begin{figure}
 \centering
@@ -457,9 +490,9 @@ For a detailed algorithm of the control server see Algorithm~\ref{alg:control_se
 \label{fig:control_state_diagram}
 \end{figure}
 
-\chapter{Performance}
+\chapter{PERFORMANCE}
 \label{chap:performance}
-To analyze the performance of TDMA a series of network performance tests were run using Netperf, an open source network performance tool that is installed by default on most Linux distributions~\cite{netperf} and the common UNIX \textit{ping} command. These tests were run on a TDMA testbed run in Impact Lab at Arizona State University. The results showed a small, but significant overhead in terms of reduced throughput when using TDMA to separate network traffic, as well as a significant impact to round trip time (RTT). The results also clearly show the temporal division of network traffic between security groups. 
+To analyze the performance of TDMA a series of network performance tests were run using Netperf, an open source network performance tool that is installed by default on most Linux distributions~\cite{netperf} and the common UNIX \textit{ping} command. These tests were run on a TDMA testbed run in Impact Lab at Arizona State University. 
 
 \begin{figure}
   \begin{center}
@@ -518,7 +551,7 @@ Figure~\ref{fig:rtt_enabled} shows the RTT of \textit{ping}s under TDMA sorted a
 
 The linear growth (see Figure~\ref{fig:rtt_2_fits}) of RTT under TDMA can be understood by recognizing how the \textit{ping} messages interact with TDMA. As the \textit{ping} messages are issued at a constant interval, during periods of network denial these messages are being queued in order. Messages enqueued at the beginning of a network denial period wait longer in the queue to reach the network than messages enqueued just before network access is enabled. Due to the steady period of message generation (every $.2$ seconds), there is a steady linear increase in RTT for these messages. 
 
-Furthermore, when, during a period of network access, these messages are received by the remote node, there is a chance that the remote node will not have processed the message to respond in time before another period of network denial is enforced. This can drive the RTT up to the time of two full time windows, in this case $2$ seconds ($1$ second per time window).
+Furthermore, when, during a period of network access, these messages are received by the remote node, there is a chance that the remote node will not have processed the message to respond in time before another period of network denial is enforced. This can drive the RTT up to the time of two full time windows, in this case $2$ seconds ($1$ second per time window), in addition to delays from network congestion, to which we attribute RTT approaching $2.5$ seconds.
 
 \begin{figure}
 \centering
@@ -529,16 +562,24 @@ Furthermore, when, during a period of network access, these messages are receive
 
 
 
-\chapter{Conclusion}
+\chapter{CONCLUSION}
 The problem of preventing data sharing among users in an HPC environment is a difficult one. Further, creating a solution that is intuitive and secure enough to convince highly sceptical stakeholders with great levels of risk of its security narrows available options. Solutions that exist in similar domains are presented in Section~\ref{sec:insufficient_solutions}, and shown to be insufficient for security reasons or difficult to verify.
 
-This thesis presents a method of solving this niche problem that is thorough, intuitive, and verifiable in real time using simple packet sniffing. TDMA was inspired by the desire to mimic the physical separation of users that is so convincing to the stakeholder we are trying to persuade. This inspiration manifested in a solution that performs temporal separation of users in lieu of physical separation.
+This thesis presents a method of solving this niche problem that is thorough, intuitive, and verifiable. TDMA was inspired by the desire to mimic the physical separation of applications such that it will be acceptable to risk-averse stakeholders. This inspiration manifested in a solution that performs temporal separation of users in lieu of physical separation.
 
 TDMA's operations are then formalized in Section~\ref{sec:formal_definition} as a grammar, providing an unambiguous description of operations. Out implementation of TDMA on an Ethernet network is then described and analyzed in Chapters~\ref{chap:implementation} and~\ref{chap:performance}. TDMA's effects are shown to be apparent in Figure~\ref{fig:Switching} and its overhead shown to be within reason considering the massive performance and financial benefits that come from running workloads concurrently.
 \section{Further Work}
-While TDMA has been implemented for a small Ethernet testbed, more work remains to be done. To gather more verbose performance measurements, TDMA needs to be enforced on standard HPC workloads, rather than simple network performance tests. While round-robin scheduling is sufficient for small testbeds, more intelligent scheduling based on application bandwidth need should be implemented and tested. Finally, to thoroughly convince skeptical stakeholders, formal verification of implementation code should be performed to ensure the formal design in Section~\ref{sec:formal_definition} matched the code that implements it.
+Continued work on this thesis can be divided into improvements and extensions of the current implementation, and research into possible alternative solutions to the driving problem of preventing interactions between applications over the network in an intuitively and verifiable way.
+
+\subsection{Improvements on TDMA}
+While TDMA has been implemented for a small Ethernet testbed, more work remains to be done. To gather more verbose performance measurements, TDMA needs to be enforced on standard HPC workloads, rather than simple network performance tests. While round-robin scheduling is sufficient for small testbeds, more intelligent scheduling based on application bandwidth need should be implemented and tested. Finally, to thoroughly convince sceptical stakeholders, formal verification of implementation code should be performed to ensure the formal design in Section~\ref{sec:formal_definition} matched the code that implements it.
+
+\subsection{Alternative Mechanisms}
+TDMA assumes a trusted agent on each compute node capable of intercepting, blocking, and queuing network packets. In our implementation (Chapter ~\ref{chap:implementation}) \textit{iptables} and \textit{NetFilter} act as elements of this trusted agent. A possible alternative to TDMA would be to configure this agent with packet filtering rules ensuring communication to outside \textit{security group}s fail. Filtering rules would be based on the whitelist concept used in TDMA - each security group only allowing ingress and egress of packets destined for nodes within its own security group and a select few administrative nodes. As jobs are scheduled and enter the system, this alternative would work in conjunction with the resource manager to reconfigure the whitelists on nodes within the entering job's security group. 
+
+This alternative provides the security benefits of TDMA without the network bandwidth and RTT overhead of enforced time windows. The major drawback to this alternative is the temporal sharing of network resources. Without the clearly defined time windows, convincing verification mechanisms are more complicated and must involve more than passive packet sniffing (the case under TDMA), such as automated penetration testing and auditing (more traditional verification techniques).
 \appendix
-\chapter{Implemented TDMA Algorithms}
+\chapter{IMPLEMENTED TDMA ALGORITHMS}
 \label{app:tdma_algorithms}
 \begin{algorithm}
 	\caption{Control Server opening and closing network access windows.}
@@ -610,7 +651,7 @@ While TDMA has been implemented for a small Ethernet testbed, more work remains 
 	\end{algorithmic}
 \end{algorithm}	
 
-\chapter{TDMA Testbed Details}
+\chapter{TDMA TESTBED DETAILS}
 \label{app:tdma_testbed}
 To verify and test the mechanism a test bed was created out of five Dell $1955$ servers seen in Figure~\ref{fig:test_bed}. These servers run Ubuntu server version 12.04 and had their network interfaces configured and connected according to Figure~\ref{fig:tdm_demo_setup}.  
 
@@ -622,7 +663,8 @@ To verify and test the mechanism a test bed was created out of five Dell $1955$ 
 \label{fig:test_bed}
 \end{figure}
 
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
+\SingleSpace
 \bibliography{bibliography}
 
 \end{document}
